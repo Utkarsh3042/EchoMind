@@ -61,7 +61,7 @@ This project is a companion application designed to assist Alzheimer's patients 
 1. Use different device for logs capturing
 2. Navigate to Main Repo folder
    ```bash
-   python app.py
+   python capture.py
    ```
 ## Contributors
 - [Shashank M S](https://github.com/shashankms2005)
