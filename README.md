@@ -63,6 +63,10 @@ This project is a companion application designed to assist Alzheimer's patients 
    ```bash
    python app.py
    ```
+## Contributors
+- [Shashank M S](https://github.com/shashankms2005)
+- [A P Saroon](https://github.com/Saroon005)
+- [Y Subhash Srinivas Reddy](https://github.com/subhash-0000)
 
 ## Contributing
 Feel free to fork this repository and submit pull requests to contribute.
