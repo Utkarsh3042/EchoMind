@@ -1,0 +1,51 @@
+/* Add these styles to Login.css to support the Register page */
+
+/* Password hint styling */
+.password-hint {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    margin-left: 0.25rem;
+  }
+  
+  /* Terms and policy text */
+  .terms-policy {
+    margin-top: 1.25rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  
+  .terms-policy a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  
+  .terms-policy a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+  }
+  
+  /* Make sure number inputs don't show spinner arrows in some browsers */
+  input[type=number]::-webkit-inner-spin-button, 
+  input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+  }
+  
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+  
+  /* Additional styles for Register form with more fields */
+  @media (max-width: 480px) {
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    
+    .input-wrapper input {
+      padding: 0.7rem 1rem 0.7rem 2.5rem;
+    }
+  }
