@@ -300,7 +300,7 @@ def signup():
 
 
     hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
-    user_id = str(uuid.uuid4())
+    user_id = str(uuid4())
 
     user = {
         '_id': user_id,
