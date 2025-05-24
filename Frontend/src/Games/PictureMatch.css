@@ -1,0 +1,304 @@
+/* Mobile-optimized Memory Game CSS */
+:root {
+  --primary-color: #ff4081; /* Bright pink */
+  --secondary-color: #4caf50; /* Green */
+  --accent-color: #ff5252; /* Red */
+  --light-bg: #fff9fb; /* Very light pink tint */
+  --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 12px;
+  margin: 15px auto;
+  max-width: 360px; /* Setting a max-width for the grid */
+  width: 94%;
+  perspective: 800px;
+}
+
+.card {
+  aspect-ratio: 1;
+  background-color: transparent;
+  perspective: 800px;
+  cursor: pointer;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Simplified hover effect */
+.card:hover {
+  transform: scale(1.03);
+}
+
+.card-back,
+.card-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backface-visibility: hidden;
+  transition: transform 0.4s ease;
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+}
+
+.card-back {
+  background: linear-gradient(135deg, var(--primary-color), #c2185b); /* Pink gradient */
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  transform: rotateY(0deg);
+}
+
+.card-front {
+  background: linear-gradient(135deg, #ffffff, #f5f5f5);
+  border: 2px solid var(--primary-color);
+  font-size: 2.2rem; /* Increased font size */
+  transform: rotateY(180deg);
+}
+
+.card.flipped .card-back {
+  transform: rotateY(180deg);
+}
+
+.card.flipped .card-front {
+  transform: rotateY(0deg);
+}
+
+/* Simplified matched animation */
+.card.matched .card-front {
+  background: linear-gradient(135deg, #e8f5e9, #c8e6c9); /* Light green gradient */
+  border-color: var(--secondary-color);
+  animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: rotateY(0deg) scale(1); }
+  50% { transform: rotateY(0deg) scale(1.05); }
+  100% { transform: rotateY(0deg) scale(1); }
+}
+
+.game-stats {
+  display: flex;
+  justify-content: space-between;
+  width: 94%;
+  max-width: 360px;
+  margin: 0 auto 15px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 10px 12px;
+  background-color: rgba(255, 64, 129, 0.08); /* Very light pink */
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+  color: #424242;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background-color: var(--light-bg);
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+  width: 94%;
+  max-width: 360px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.game-complete {
+  text-align: center;
+  margin: 15px auto;
+  padding: 18px 15px;
+  background: linear-gradient(135deg, #f5f5f5, var(--light-bg));
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 94%;
+  max-width: 360px;
+  border: 1px solid var(--primary-color);
+}
+
+.game-complete h3 {
+  font-size: 1.4rem;
+  color: var(--secondary-color);
+  margin-bottom: 10px;
+}
+
+.game-complete p {
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+  color: #424242;
+}
+
+.game-title-header {
+  text-align: center;
+  font-size: 1.6rem;
+  color: var(--primary-color);
+  margin: 12px 0;
+}
+
+.back-button {
+  display: inline-block;
+  padding: 7px 12px;
+  background-color: var(--primary-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+  font-size: 0.85rem;
+}
+
+.back-button:hover {
+  background-color: #d81b60; /* Darker pink */
+}
+
+.start-button {
+  padding: 9px 16px;
+  background: linear-gradient(135deg, var(--secondary-color), #2e7d32); /* Green gradient */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: all 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.start-button:hover {
+  background: linear-gradient(135deg, #43a047, #2e7d32);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
+}
+
+.start-button:active {
+  transform: translateY(0);
+}
+
+.instructions {
+  text-align: center;
+  margin: 15px auto;
+  width: 94%;
+  max-width: 360px;
+  padding: 12px 15px;
+  background-color: rgba(255, 64, 129, 0.06);
+  border-radius: 8px;
+  border-left: 3px solid var(--primary-color);
+}
+
+.instructions p {
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  color: #424242;
+}
+
+.score-message {
+  margin: 12px auto;
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ffebee, #ffcdd2); /* Light red */
+  border-left: 3px solid var(--accent-color);
+  color: #c62828;
+  width: 94%;
+  max-width: 360px;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.score-saved {
+  color: var(--secondary-color);
+  font-weight: bold;
+  margin: 8px 0;
+  animation: fadeIn 0.4s ease-in-out;
+  font-size: 0.9rem;
+}
+
+.score-error {
+  color: var(--accent-color);
+  font-weight: bold;
+  margin: 8px 0;
+  animation: fadeIn 0.4s ease-in-out;
+  font-size: 0.9rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-1px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Enhanced mobile responsiveness */
+@media (max-width: 480px) {
+  .cards-grid {
+    width: 70%;
+    gap: 12px;
+  }
+  
+  .card-back {
+    font-size: 1.3rem;
+  }
+  
+  .card-front {
+    font-size: 2rem;
+  }
+}
+
+/* For smaller phones */
+@media (max-width: 360px) {
+  .cards-grid {
+    gap: 12px;
+  }
+  
+  .card-back {
+    font-size: 1.2rem;
+  }
+  
+  .card-front {
+    font-size: 1.8rem;
+  }
+  
+  .game-stats, .game-header, .game-complete, .instructions, .score-message {
+    width: 98%;
+    padding: 8px 10px;
+  }
+  
+  .game-title-header {
+    font-size: 1.4rem;
+  }
+  
+  .back-button, .start-button {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Landscape mode adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+  .cards-grid {
+    margin: 8px auto;
+    max-height: 70vh;
+  }
+  
+  .game-title-header {
+    margin: 8px 0;
+  }
+  
+  .instructions, .game-complete {
+    padding: 8px;
+    margin: 8px auto;
+  }
+  
+  .game-stats {
+    margin-bottom: 8px;
+  }
+}
