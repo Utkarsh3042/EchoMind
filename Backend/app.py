@@ -106,7 +106,7 @@ scheduler.start()
 def send_email(to_email, subject, body):
     try:
         email_address = os.getenv("EMAIL_ADDRESS") or "echomind.reminder@gmail.com"
-        email_password = os.getenv("EMAIL_PASSWORD") or "wjap csdz xrxb aknz" # Use App Password for Gmail
+        email_password = os.getenv("EMAIL_PASSWORD") or "amhd krsr pmnh cybq" # Use App Password for Gmail
 
         print(f"Using email address: {email_address}")
         print("Connecting to SMTP server...")

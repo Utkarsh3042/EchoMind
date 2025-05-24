@@ -19,8 +19,8 @@ def send_sos_email(recipient_name, recipient_email, user_name, location, timesta
         timestamp (str): Timestamp when SOS was triggered
     """
     # Get email credentials from environment variables
-    sender_email = os.getenv("SENDER_EMAIL", "your-app-email@gmail.com")
-    app_password = os.getenv("APP_PASSWORD", "your-app-password")
+    sender_email = os.getenv("SENDER_EMAIL", "echomind.reminder@gmail.com")
+    app_password = os.getenv("APP_PASSWORD", "rvzr alaj bwlc jtca")
     
     # Create message
     msg = MIMEMultipart()
