@@ -507,14 +507,6 @@ function GameHome() {
                   </div>
                   <div className="text-sm sm:text-xl text-gray-300">Best Performing Game</div>
                 </div>
-                <div className="bg-gray-800 p-3 sm:p-5 rounded-lg border border-gray-600 shadow-sm">
-                  <div className="text-xl sm:text-3xl font-bold text-purple-400 mb-1 sm:mb-2">
-                    {Object.entries(stats.mostPlayedGame).reduce((a, b) =>
-                      stats.mostPlayedGame[a[0]] > stats.mostPlayedGame[b[0]] ? a : b
-                    )[0].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                  </div>
-                  <div className="text-sm sm:text-xl text-gray-300">Most Played Game</div>
-                </div>
               </div>
             </div>
           )}

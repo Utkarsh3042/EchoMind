@@ -165,7 +165,7 @@ const Signup = ({ onSignup }) => {
       if (response.ok) {
         localStorage.setItem('user', JSON.stringify(data.user || { email: formData.email, name: formData.name }));
         if (onSignup) onSignup();
-        navigate('/dashboard');
+        navigate('/login');
       } else {
         setError(data.message || 'Signup failed. Please try again.');
       }
