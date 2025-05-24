@@ -1,0 +1,4 @@
+venv/
+*.pyc
+.env
+arcface_r100.pth
