@@ -1,9 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next"; // Import translation hook
 
 function Navbar({ user }) {
   const navigate = useNavigate();
+  const { t } = useTranslation(); // Initialize translation hook
 
   const navbarVariants = {
     hidden: { opacity: 0, y: -50 },
@@ -19,7 +21,7 @@ function Navbar({ user }) {
     }
   };
 
-    const brainGlowVariants = {
+  const brainGlowVariants = {
     initial: { textShadow: "0 0px 0px rgba(255,255,255,0.7)" },
     animate: {
       textShadow: ["0 0 0px rgba(255,255,255,0.7)", "0 0 8px rgba(255,255,255,0.7)", "0 0 0px rgba(255,255,255,0.7)"],
@@ -72,12 +74,12 @@ function Navbar({ user }) {
         "
         variants={brandVariants}
       >
-             <motion.span 
-                  className="text-3xl sm:text-4xl" 
-                  variants={brainGlowVariants} // Apply glow variants here
-                  initial="initial"
-                  animate="animate"
-                >🧠</motion.span>
+        <motion.span 
+          className="text-3xl sm:text-4xl" 
+          variants={brainGlowVariants} // Apply glow variants here
+          initial="initial"
+          animate="animate"
+        >🧠</motion.span>
         <h1
           className="
             m-0 text-3xl sm:text-4xl md:text-5xl lg:text-4xl font-extrabold tracking-wide
@@ -99,7 +101,7 @@ function Navbar({ user }) {
       >
         {user && (
           <span className="font-semibold whitespace-nowrap text-lg sm:text-xl text-gray-100 drop-shadow-sm">
-            Hi, {user.name}
+            {t('hi')}, {user.name}
           </span>
         )}
         <motion.button
@@ -118,7 +120,7 @@ function Navbar({ user }) {
           whileHover={{ scale: 1.05, boxShadow: "0 6px 12px rgba(0,0,0,0.25)" }}
           whileTap={{ scale: 0.95 }}
         >
-          Logout
+          {t('logout')}
         </motion.button>
       </div>
     </motion.div>

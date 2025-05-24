@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion"; // Import motion from framer-motion
+import { useTranslation } from "react-i18next"; // Import translation hook
 
 const MedicationReminderForm = ({ onReminderCreated }) => {
+  const { t } = useTranslation(); // Initialize translation hook
   const [formData, setFormData] = useState({
     name: "",
     dosage: "",
@@ -28,7 +30,7 @@ const MedicationReminderForm = ({ onReminderCreated }) => {
       // Make sure the date is in the future
       const reminderDate = new Date(formData.date_time.replace("T", " "));
       if (reminderDate <= new Date()) {
-        setError("Reminder date must be in the future");
+        setError(t("reminderDateFuture"));
         setLoading(false);
         return;
       }
@@ -59,11 +61,11 @@ const MedicationReminderForm = ({ onReminderCreated }) => {
         });
         onReminderCreated();
       } else {
-        setError(result.message || "Failed to create reminder.");
+        setError(result.message || t("failedToCreateReminder"));
       }
     } catch (error) {
       console.error("Error creating reminder:", error);
-      setError("An error occurred while creating the reminder.");
+      setError(t("errorCreatingReminder"));
     } finally {
       setLoading(false);
     }
@@ -83,7 +85,7 @@ const MedicationReminderForm = ({ onReminderCreated }) => {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Create New Medication Reminder</h2>
+      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">{t("createNewMedicationReminder")}</h2>
       
       {error && (
         <motion.div 
@@ -93,14 +95,14 @@ const MedicationReminderForm = ({ onReminderCreated }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <strong className="font-bold">Error!</strong>
+          <strong className="font-bold">{t("error")}!</strong>
           <span className="block sm:inline ml-2">{error}</span>
         </motion.div>
       )}
       
       <form onSubmit={handleSubmit} className="space-y-5"> {/* Increased space-y for better spacing */}
         <motion.div className="form-group" variants={formItemVariants}>
-          <label htmlFor="name" className="block text-sm font-semibold mb-2">Medication Name:</label>
+          <label htmlFor="name" className="block text-sm font-semibold mb-2">{t("medicationName")}:</label>
           <input 
             type="text" 
             name="name" 
@@ -113,35 +115,35 @@ const MedicationReminderForm = ({ onReminderCreated }) => {
         </motion.div>
         
         <motion.div className="form-group" variants={formItemVariants}>
-          <label htmlFor="dosage" className="block text-sm font-semibold mb-2">Dosage:</label>
+          <label htmlFor="dosage" className="block text-sm font-semibold mb-2">{t("dosage")}:</label>
           <input 
             type="text" 
             name="dosage" 
             id="dosage"
             value={formData.dosage} 
             onChange={handleChange} 
-            placeholder="e.g., 10mg, 2 tablets" 
+            placeholder={t("dosagePlaceholder")} 
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out placeholder-gray-500" 
             required 
           />
         </motion.div>
         
         <motion.div className="form-group" variants={formItemVariants}>
-          <label htmlFor="instruction" className="block text-sm font-semibold mb-2">Instructions:</label>
+          <label htmlFor="instruction" className="block text-sm font-semibold mb-2">{t("instructions")}:</label>
           <input 
             type="text" 
             name="instruction" 
             id="instruction"
             value={formData.instruction} 
             onChange={handleChange}
-            placeholder="e.g., Take with food, before sleep" 
+            placeholder={t("instructionsPlaceholder")} 
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out placeholder-gray-500" 
             required 
           />
         </motion.div>
         
         <motion.div className="form-group" variants={formItemVariants}>
-          <label htmlFor="date_time" className="block text-sm font-semibold mb-2">Start Date & Time:</label>
+          <label htmlFor="date_time" className="block text-sm font-semibold mb-2">{t("startDateTime")}:</label>
           <input 
             type="datetime-local" 
             name="date_time" 
@@ -154,7 +156,7 @@ const MedicationReminderForm = ({ onReminderCreated }) => {
         </motion.div>
         
         <motion.div className="form-group" variants={formItemVariants}>
-          <label htmlFor="frequency" className="block text-sm font-semibold mb-2">Frequency:</label>
+          <label htmlFor="frequency" className="block text-sm font-semibold mb-2">{t("frequency")}:</label>
           <div className="relative"> {/* Added relative for custom dropdown arrow */}
             <select 
               name="frequency" 
@@ -163,9 +165,9 @@ const MedicationReminderForm = ({ onReminderCreated }) => {
               onChange={handleChange}
               className="block appearance-none w-full bg-white border border-gray-300 text-gray-800 py-2 px-4 pr-8 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
             >
-              <option value="daily">Daily</option>
-              <option value="weekly">Weekly</option>
-              <option value="monthly">Monthly</option>
+              <option value="daily">{t("daily")}</option>
+              <option value="weekly">{t("weekly")}</option>
+              <option value="monthly">{t("monthly")}</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -174,7 +176,7 @@ const MedicationReminderForm = ({ onReminderCreated }) => {
         </motion.div>
         
         <motion.div className="form-group" variants={formItemVariants}>
-          <label htmlFor="email" className="block text-sm font-semibold mb-2">Email for Notifications:</label>
+          <label htmlFor="email" className="block text-sm font-semibold mb-2">{t("emailForNotifications")}:</label>
           <input 
             type="email" 
             name="email" 
@@ -201,9 +203,9 @@ const MedicationReminderForm = ({ onReminderCreated }) => {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              Creating...
+              {t("creating")}...
             </div> 
-            ) : "Create Reminder"
+            ) : t("createReminder")
           }
         </motion.button>
       </form>

@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion"; // Import motion and AnimatePresence
 import NavBack from "../NavBack";
+import { useTranslation } from "react-i18next"; // Import translation hook
 
 // Update the base URL to match your backend
 const API_BASE_URL = "http://localhost:5000";
 
 function Contacts() {
+  const { t } = useTranslation(); // Initialize translation hook
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -17,8 +19,8 @@ function Contacts() {
 
   // Default conversation data
   const defaultConversationData = [
-    { "text": "Hello", "timestamp": "2025-03-20T09:30:00.000000" },
-    { "text": "hi", "timestamp": "2025-03-20T09:30:15.000000" },
+    { "text": t("hello"), "timestamp": "2025-03-20T09:30:00.000000" },
+    { "text": t("hi"), "timestamp": "2025-03-20T09:30:15.000000" },
   ];
 
   const [newContact, setNewContact] = useState({
@@ -53,13 +55,13 @@ function Contacts() {
         setUser(userData);
       } catch (err) {
         console.error("Error parsing user data:", err);
-        setError("Error loading user data");
+        setError(t("errorLoadingUserData"));
       }
     } else {
       // Redirect to login if no user found
       navigate("/login");
     }
-  }, [navigate]);
+  }, [navigate, t]);
 
   useEffect(() => {
     if (user?.user_id) {
@@ -81,7 +83,7 @@ function Contacts() {
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Server responded with status: ${response.status} - ${errorText}`);
+        throw new Error(`${t("serverRespondedWithStatus")}: ${response.status} - ${errorText}`);
       }
 
       const data = await response.json();
@@ -89,10 +91,10 @@ function Contacts() {
       if (data.success) {
         setContacts(data.contacts);
       } else {
-        setError("Failed to load contacts");
+        setError(t("failedToLoadContacts"));
       }
     } catch (err) {
-      setError("An error occurred while fetching contacts: " + err.message);
+      setError(t("errorFetchingContacts") + err.message);
       console.error(err);
     } finally {
       setLoading(false);
@@ -130,7 +132,7 @@ function Contacts() {
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Upload error: ${response.status} - ${errorText}`);
+        throw new Error(`${t("uploadError")}: ${response.status} - ${errorText}`);
       }
 
       const data = await response.json();
@@ -138,10 +140,10 @@ function Contacts() {
       if (data.success) {
         return data.imageUrl;
       } else {
-        throw new Error(data.error || "Image upload failed");
+        throw new Error(data.error || t("imageUploadFailed"));
       }
     } catch (err) {
-      console.error("Image upload error:", err);
+      console.error(t("imageUploadError"), err);
       throw err;
     } finally {
       setUploadingImage(false);
@@ -170,8 +172,8 @@ function Contacts() {
         });
       }
     } catch (err) {
-      console.error("Error creating preview:", err);
-      setError("Error creating image preview");
+      console.error(t("errorCreatingPreview"), err);
+      setError(t("errorCreatingImagePreview"));
     }
   };
 
@@ -180,13 +182,13 @@ function Contacts() {
 
     // Validate input
     if (!newContact.name || !newContact.name.trim()) {
-      setError("Contact name is required");
+      setError(t("contactNameRequired"));
       return;
     }
 
     // Basic email validation
     if (newContact.email && !validateEmail(newContact.email)) {
-      setError("Please enter a valid email address");
+      setError(t("enterValidEmail"));
       return;
     }
 
@@ -200,10 +202,10 @@ function Contacts() {
       if (newContact.file) {
         try {
           imageUrl = await uploadImageToBackend(newContact.file);
-          console.log("Image uploaded successfully:", imageUrl);
+          console.log(t("imageUploadedSuccessfully"), imageUrl);
         } catch (uploadError) {
-          console.error("Image upload failed:", uploadError);
-          setError("Failed to upload image. Contact will be added without photo.");
+          console.error(t("imageUploadFailed"), uploadError);
+          setError(t("failedToUploadImage"));
         }
       }
 
@@ -215,11 +217,11 @@ function Contacts() {
         isEmergency: newContact.isEmergency || false,
         photo_url: imageUrl,
         user_id: user.user_id,
-        user_name: user.name || "Unknown",
+        user_name: user.name || t("unknown"),
         conversation_data: defaultConversationData
       };
 
-      console.log("Sending contact data to backend:", contactData);
+      console.log(t("sendingContactDataToBackend"), contactData);
 
       // First, add to your main contacts API
       const response = await fetch(`${API_BASE_URL}/api/contacts`, {
@@ -233,16 +235,16 @@ function Contacts() {
       });
 
       if (!response.ok) {
-        throw new Error(`Server responded with status: ${response.status}`);
+        throw new Error(`${t("serverRespondedWithStatus")}: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log("Backend response:", data);
+      console.log(t("backendResponse"), data);
 
       if (data.success) {
         // Now make the POST request to the /add endpoint (external service)
         try {
-          const addResponse = await fetch(`https://slzvr7mc-5000.inc1.devtunnels.ms/add`, {
+          const addResponse = await fetch(`https://slzvr7mc-8000.inc1.devtunnels.ms/add`, {
             method: 'POST',
             mode: 'cors',
             headers: {
@@ -257,14 +259,14 @@ function Contacts() {
 
           if (addResponse.ok) {
             const addData = await addResponse.json();
-            console.log("Add endpoint response:", addData);
+            console.log(t("addEndpointResponse"), addData);
             setExternalNotificationStatus('succeeded');
           } else {
-            console.error("Add endpoint failed:", addResponse.status);
+            console.error(t("addEndpointFailed"), addResponse.status);
             setExternalNotificationStatus('failed');
           }
         } catch (addError) {
-          console.error("Error calling add endpoint:", addError);
+          console.error(t("errorCallingAddEndpoint"), addError);
           setExternalNotificationStatus('failed');
         }
 
@@ -290,11 +292,11 @@ function Contacts() {
         setError("");
 
       } else {
-        setError(data.error || "Failed to add contact");
+        setError(data.error || t("failedToAddContact"));
       }
     } catch (err) {
-      console.error("Error adding contact:", err);
-      setError("An error occurred while adding the contact: " + err.message);
+      console.error(t("errorAddingContact"), err);
+      setError(t("errorOccurredAddingContact") + err.message);
     } finally {
       setLoading(false);
     }
@@ -305,13 +307,13 @@ function Contacts() {
 
     // Validate input
     if (!editContact.name) {
-      setError("Contact name is required");
+      setError(t("contactNameRequired"));
       return;
     }
 
     // Basic email validation
     if (editContact.email && !validateEmail(editContact.email)) {
-      setError("Please enter a valid email address");
+      setError(t("enterValidEmail"));
       return;
     }
 
@@ -339,7 +341,7 @@ function Contacts() {
       });
 
       if (!response.ok) {
-        throw new Error(`Server responded with status: ${response.status}`);
+        throw new Error(`${t("serverRespondedWithStatus")}: ${response.status}`);
       }
 
       const data = await response.json();
@@ -349,10 +351,10 @@ function Contacts() {
         setShowEditModal(false);
         setError("");
       } else {
-        setError(data.error || "Failed to update contact");
+        setError(data.error || t("failedToUpdateContact"));
       }
     } catch (err) {
-      setError("An error occurred while updating the contact: " + err.message);
+      setError(t("errorOccurredUpdatingContact") + err.message);
       console.error(err);
     } finally {
       setLoading(false);
@@ -365,14 +367,14 @@ function Contacts() {
   };
 
   const handleDeleteContact = async (contactId) => {
-    if (window.confirm("Are you sure you want to delete this contact?")) {
+    if (window.confirm(t("confirmDeleteContact"))) {
       try {
         const response = await fetch(`${API_BASE_URL}/api/contacts/${contactId}`, {
           method: 'DELETE'
         });
 
         if (!response.ok) {
-          throw new Error(`Server responded with status: ${response.status}`);
+          throw new Error(`${t("serverRespondedWithStatus")}: ${response.status}`);
         }
 
         const data = await response.json();
@@ -380,10 +382,10 @@ function Contacts() {
         if (data.success) {
           fetchContacts();
         } else {
-          setError(data.error || "Failed to delete contact");
+          setError(data.error || t("failedToDeleteContact"));
         }
       } catch (err) {
-        setError("An error occurred while deleting the contact");
+        setError(t("errorOccurredDeletingContact"));
         console.error(err);
       }
     }
@@ -406,7 +408,7 @@ function Contacts() {
       const date = new Date(timestamp);
       return date.toLocaleString();
     } catch (err) {
-      console.error("Error formatting timestamp:", err);
+      console.error(t("errorFormattingTimestamp"), err);
       return timestamp;
     }
   };
@@ -450,7 +452,7 @@ function Contacts() {
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
-        Loading user data...
+        {t("loadingUserData")}
       </div>
     );
   }
@@ -472,7 +474,7 @@ function Contacts() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6 }}
         >
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-center text-red-500 mb-8 tracking-wide">My Contacts</h1>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-center text-red-500 mb-8 tracking-wide">{t("myContacts")}</h1>
 
           <AnimatePresence>
             {error && (
@@ -494,9 +496,9 @@ function Contacts() {
                 animate="visible"
                 exit="exit"
               >
-                External notification {externalNotificationStatus === 'succeeded' ? 'succeeded' : 'failed'}
-                {externalNotificationStatus === 'succeeded' && ' - Contact added to external service!'}
-                {externalNotificationStatus === 'failed' && ' - Failed to notify external service, but contact was saved locally.'}
+                {t("externalNotification")} {externalNotificationStatus === 'succeeded' ? t("succeeded") : t("failed")}
+                {externalNotificationStatus === 'succeeded' && t("contactAddedToExternalService")}
+                {externalNotificationStatus === 'failed' && t("failedToNotifyExternalService")}
               </motion.div>
             )}
           </AnimatePresence>
@@ -506,7 +508,7 @@ function Contacts() {
             onClick={() => setShowAddModal(true)}
             {...buttonHoverTap}
           >
-            <span className="text-2xl mr-2">+</span> Add New Contact
+            <span className="text-2xl mr-2">+</span> {t("addNewContact")}
           </motion.button>
 
           {loading ? (
@@ -515,12 +517,12 @@ function Contacts() {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              <p className="text-lg text-gray-400">Loading contacts...</p>
+              <p className="text-lg text-gray-400">{t("loadingContacts")}</p>
             </div>
           ) : (
             <div className="contacts-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {contacts.length === 0 ? (
-                <p className="no-contacts text-center text-lg text-gray-400 col-span-full py-10">No contacts found. Add some!</p>
+                <p className="no-contacts text-center text-lg text-gray-400 col-span-full py-10">{t("noContactsFound")}</p>
               ) : (
                 contacts.map((contact) => (
                   <motion.div
@@ -542,23 +544,23 @@ function Contacts() {
                       )}
                       {contact.isEmergency && (
                         <span className="emergency-badge absolute top-0 right-0 bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded-full transform translate-x-1/4 -translate-y-1/4 shadow-md">
-                          Emergency
+                          {t("emergency")}
                         </span>
                       )}
                     </div>
                     <div className="contact-info text-center flex-grow">
                       <h3 className="text-xl font-bold text-white mb-2">{contact.name}</h3>
-                      {contact.email && <p className="text-gray-300 text-sm break-all"><strong>Email:</strong> {contact.email}</p>}
-                      {contact.phone && <p className="text-gray-300 text-sm"><strong>Phone:</strong> {contact.phone}</p>}
+                      {contact.email && <p className="text-gray-300 text-sm break-all"><strong>{t("email")}:</strong> {contact.email}</p>}
+                      {contact.phone && <p className="text-gray-300 text-sm"><strong>{t("phone")}:</strong> {contact.phone}</p>}
                       {contact.user_name && (
-                        <p className="added-by text-gray-400 text-xs mt-2">Added by: {contact.user_name}</p>
+                        <p className="added-by text-gray-400 text-xs mt-2">{t("addedBy")}: {contact.user_name}</p>
                       )}
                     </div>
                     <div className="contact-actions flex space-x-2 mt-4">
                       <motion.button
                         className="edit-btn p-2 bg-yellow-500 hover:bg-yellow-600 rounded-full text-white transition-colors duration-200"
                         onClick={() => handleEditButtonClick(contact)}
-                        title="Edit Contact"
+                        title={t("editContact")}
                         {...buttonHoverTap}
                       >
                         <i className="edit-icon">✏️</i>
@@ -566,7 +568,7 @@ function Contacts() {
                       <motion.button
                         className="view-conversation-btn p-2 bg-purple-600 hover:bg-purple-700 rounded-full text-white transition-colors duration-200"
                         onClick={() => handleViewConversation(contact)}
-                        title="View Conversation"
+                        title={t("viewConversation")}
                         {...buttonHoverTap}
                       >
                         <i className="conversation-icon">💬</i>
@@ -574,7 +576,7 @@ function Contacts() {
                       <motion.button
                         className="delete-btn p-2 bg-red-600 hover:bg-red-700 rounded-full text-white text-lg font-bold transition-colors duration-200"
                         onClick={() => handleDeleteContact(contact._id)}
-                        title="Delete Contact"
+                        title={t("deleteContact")}
                         {...buttonHoverTap}
                       >
                         ×
@@ -604,7 +606,7 @@ function Contacts() {
                 exit="exit"
               >
                 <div className="modal-header flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold text-white">Add New Contact</h2>
+                  <h2 className="text-2xl font-bold text-white">{t("addNewContact")}</h2>
                   <motion.button
                     className="close-btn text-gray-400 hover:text-white text-3xl leading-none"
                     onClick={() => setShowAddModal(false)}
@@ -616,41 +618,41 @@ function Contacts() {
 
                 <form onSubmit={handleAddContact}>
                   <div className="form-group mb-4">
-                    <label htmlFor="name" className="block text-gray-300 text-sm font-semibold mb-2">Name *</label>
+                    <label htmlFor="name" className="block text-gray-300 text-sm font-semibold mb-2">{t("name")} *</label>
                     <input
                       type="text"
                       id="name"
                       name="name"
                       value={newContact.name}
                       onChange={(e) => handleInputChange(e, false)}
-                      placeholder="Contact Name"
+                      placeholder={t("contactName")}
                       className="w-full px-4 py-2 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:border-blue-500"
                       required
                     />
                   </div>
 
                   <div className="form-group mb-4">
-                    <label htmlFor="email" className="block text-gray-300 text-sm font-semibold mb-2">Email</label>
+                    <label htmlFor="email" className="block text-gray-300 text-sm font-semibold mb-2">{t("email")}</label>
                     <input
                       type="email"
                       id="email"
                       name="email"
                       value={newContact.email}
                       onChange={(e) => handleInputChange(e, false)}
-                      placeholder="Email Address"
+                      placeholder={t("emailAddress")}
                       className="w-full px-4 py-2 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:border-blue-500"
                     />
                   </div>
 
                   <div className="form-group mb-4">
-                    <label htmlFor="phone" className="block text-gray-300 text-sm font-semibold mb-2">Phone Number</label>
+                    <label htmlFor="phone" className="block text-gray-300 text-sm font-semibold mb-2">{t("phoneNumber")}</label>
                     <input
                       type="tel"
                       id="phone"
                       name="phone"
                       value={newContact.phone}
                       onChange={(e) => handleInputChange(e, false)}
-                      placeholder="Phone Number"
+                      placeholder={t("phoneNumber")}
                       className="w-full px-4 py-2 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:border-blue-500"
                     />
                   </div>
@@ -664,11 +666,11 @@ function Contacts() {
                       onChange={(e) => handleInputChange(e, false)}
                       className="mr-2 h-5 w-5 text-blue-600 rounded focus:ring-blue-500"
                     />
-                    <label htmlFor="isEmergency" className="text-gray-300 text-sm font-semibold">Emergency Contact</label>
+                    <label htmlFor="isEmergency" className="text-gray-300 text-sm font-semibold">{t("emergencyContact")}</label>
                   </div>
 
                   <div className="form-group mb-6">
-                    <label htmlFor="photo" className="block text-gray-300 text-sm font-semibold mb-2">Photo</label>
+                    <label htmlFor="photo" className="block text-gray-300 text-sm font-semibold mb-2">{t("photo")}</label>
                     <input
                       type="file"
                       id="photo"
@@ -679,7 +681,7 @@ function Contacts() {
                     />
                     {newContact.photo_url && (
                       <div className="preview-photo mt-4">
-                        <img src={newContact.photo_url} alt="Preview" className="max-w-[100px] max-h-[100px] rounded-full object-cover mx-auto" />
+                        <img src={newContact.photo_url} alt={t("preview")} className="max-w-[100px] max-h-[100px] rounded-full object-cover mx-auto" />
                       </div>
                     )}
                   </div>
@@ -692,7 +694,7 @@ function Contacts() {
                       className="px-6 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md font-semibold transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                       {...buttonHoverTap}
                     >
-                      Cancel
+                      {t("cancel")}
                     </motion.button>
                     <motion.button
                       type="submit"
@@ -700,7 +702,7 @@ function Contacts() {
                       disabled={uploadingImage || loading}
                       {...buttonHoverTap}
                     >
-                      {uploadingImage ? "Uploading..." : loading ? "Adding Contact..." : "Add Contact"}
+                      {uploadingImage ? t("uploading") : loading ? t("addingContact") : t("addContact")}
                     </motion.button>
                   </div>
                 </form>
@@ -726,7 +728,7 @@ function Contacts() {
                 exit="exit"
               >
                 <div className="modal-header flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold text-white">Edit Contact</h2>
+                  <h2 className="text-2xl font-bold text-white">{t("editContact")}</h2>
                   <motion.button
                     className="close-btn text-gray-400 hover:text-white text-3xl leading-none"
                     onClick={() => setShowEditModal(false)}
@@ -738,41 +740,41 @@ function Contacts() {
 
                 <form onSubmit={handleEditContact}>
                   <div className="form-group mb-4">
-                    <label htmlFor="edit-name" className="block text-gray-300 text-sm font-semibold mb-2">Name *</label>
+                    <label htmlFor="edit-name" className="block text-gray-300 text-sm font-semibold mb-2">{t("name")} *</label>
                     <input
                       type="text"
                       id="edit-name"
                       name="name"
                       value={editContact.name}
                       onChange={(e) => handleInputChange(e, true)}
-                      placeholder="Contact Name"
+                      placeholder={t("contactName")}
                       className="w-full px-4 py-2 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:border-blue-500"
                       required
                     />
                   </div>
 
                   <div className="form-group mb-4">
-                    <label htmlFor="edit-email" className="block text-gray-300 text-sm font-semibold mb-2">Email</label>
+                    <label htmlFor="edit-email" className="block text-gray-300 text-sm font-semibold mb-2">{t("email")}</label>
                     <input
                       type="email"
                       id="edit-email"
                       name="email"
                       value={editContact.email}
                       onChange={(e) => handleInputChange(e, true)}
-                      placeholder="Email Address"
+                      placeholder={t("emailAddress")}
                       className="w-full px-4 py-2 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:border-blue-500"
                     />
                   </div>
 
                   <div className="form-group mb-4">
-                    <label htmlFor="edit-phone" className="block text-gray-300 text-sm font-semibold mb-2">Phone Number</label>
+                    <label htmlFor="edit-phone" className="block text-gray-300 text-sm font-semibold mb-2">{t("phoneNumber")}</label>
                     <input
                       type="tel"
                       id="edit-phone"
                       name="phone"
                       value={editContact.phone}
                       onChange={(e) => handleInputChange(e, true)}
-                      placeholder="Phone Number"
+                      placeholder={t("phoneNumber")}
                       className="w-full px-4 py-2 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:border-blue-500"
                     />
                   </div>
@@ -786,11 +788,11 @@ function Contacts() {
                       onChange={(e) => handleInputChange(e, true)}
                       className="mr-2 h-5 w-5 text-blue-600 rounded focus:ring-blue-500"
                     />
-                    <label htmlFor="edit-isEmergency" className="text-gray-300 text-sm font-semibold">Emergency Contact</label>
+                    <label htmlFor="edit-isEmergency" className="text-gray-300 text-sm font-semibold">{t("emergencyContact")}</label>
                   </div>
 
                   <div className="form-group mb-6">
-                    <label htmlFor="edit-photo" className="block text-gray-300 text-sm font-semibold mb-2">Photo</label>
+                    <label htmlFor="edit-photo" className="block text-gray-300 text-sm font-semibold mb-2">{t("photo")}</label>
                     <input
                       type="file"
                       id="edit-photo"
@@ -801,10 +803,10 @@ function Contacts() {
                     />
                     {editContact.photo_url && (
                       <div className="preview-photo mt-4">
-                        <img src={editContact.photo_url} alt="Preview" className="max-w-[100px] max-h-[100px] rounded-full object-cover mx-auto" />
+                        <img src={editContact.photo_url} alt={t("preview")} className="max-w-[100px] max-h-[100px] rounded-full object-cover mx-auto" />
                       </div>
                     )}
-                    <small className="photo-note text-gray-400 text-xs block mt-2">Leave empty to keep current photo</small>
+                    <small className="photo-note text-gray-400 text-xs block mt-2">{t("leaveEmptyToKeepCurrentPhoto")}</small>
                   </div>
 
                   <div className="form-actions flex justify-end space-x-4">
@@ -815,7 +817,7 @@ function Contacts() {
                       className="px-6 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md font-semibold transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                       {...buttonHoverTap}
                     >
-                      Cancel
+                      {t("cancel")}
                     </motion.button>
                     <motion.button
                       type="submit"
@@ -823,7 +825,7 @@ function Contacts() {
                       disabled={uploadingImage || loading}
                       {...buttonHoverTap}
                     >
-                      {uploadingImage ? "Uploading..." : "Save Changes"}
+                      {uploadingImage ? t("uploading") : t("saveChanges")}
                     </motion.button>
                   </div>
                 </form>
@@ -849,7 +851,7 @@ function Contacts() {
                 exit="exit"
               >
                 <div className="modal-header flex justify-between items-center mb-6 pb-4 border-b border-gray-700">
-                  <h2 className="text-2xl font-bold text-white">Conversation with {selectedContact.name}</h2>
+                  <h2 className="text-2xl font-bold text-white">{t("conversationWith")} {selectedContact.name}</h2>
                   <motion.button
                     className="close-btn text-gray-400 hover:text-white text-3xl leading-none"
                     onClick={() => setShowConversationModal(false)}
@@ -870,7 +872,7 @@ function Contacts() {
                       ))}
                     </div>
                   ) : (
-                    <p className="no-conversation text-center text-gray-400 py-10">No conversation history available.</p>
+                    <p className="no-conversation text-center text-gray-400 py-10">{t("noConversationHistory")}</p>
                   )}
                 </div>
 
@@ -880,7 +882,7 @@ function Contacts() {
                     onClick={() => setShowConversationModal(false)}
                     {...buttonHoverTap}
                   >
-                    Close
+                    {t("close")}
                   </motion.button>
                 </div>
               </motion.div>

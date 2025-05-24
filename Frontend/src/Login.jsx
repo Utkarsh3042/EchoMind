@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion'; 
+import { useTranslation } from "react-i18next"; // Import useTranslation
+
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -9,6 +11,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation(); // Use the hook to access translations
 
   // --- Framer Motion Variants ---
 
@@ -202,7 +205,7 @@ const Login = () => {
           {/* Email Input Field - Animated with Framer Motion */}
           <motion.div variants={inputVariants}>
             <label htmlFor="email" className="block text-gray-200 text-sm font-medium mb-1">
-              Email
+              {t("email")}
             </label>
             <motion.input
               type="email"
@@ -220,7 +223,7 @@ const Login = () => {
           {/* Password Input Field - Animated with Framer Motion */}
           <motion.div variants={inputVariants}>
             <label htmlFor="password" className="block text-gray-200 text-sm font-medium mb-1">
-              Password
+              {t("password")}
             </label>
             <motion.input
               type="password"
@@ -252,7 +255,7 @@ const Login = () => {
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
             ) : (
-              'Login'
+              t("login")
             )}
           </motion.button>
         </form>
@@ -260,9 +263,9 @@ const Login = () => {
         {/* Footer Link - Animated with Framer Motion */}
         <motion.div className="mt-6 text-center text-gray-200" variants={textVariants}>
           <p>
-            Don't have an account?{' '}
+            {t("dontHaveAccount")} {' '}
             <Link to="/signup" className="text-purple-900 hover:text-purple-100 font-semibold transition-colors duration-200">
-              Sign up
+              {t("register")}
             </Link>
           </p>
         </motion.div>

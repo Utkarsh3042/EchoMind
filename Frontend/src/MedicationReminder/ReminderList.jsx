@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { CheckCircle, XCircle, Edit3, Trash2, Clock } from 'react-feather'; // Added Clock for pending status
 import { motion, AnimatePresence } from "framer-motion"; // Import motion and AnimatePresence
+import { useTranslation } from "react-i18next"; // Import translation hook
 
 const ReminderList = ({ refreshTrigger }) => {
+  const { t, i18n } = useTranslation(); // Initialize translation hook
   const [reminders, setReminders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -42,18 +44,18 @@ const ReminderList = ({ refreshTrigger }) => {
         });
         setReminders(sortedReminders);
       } else {
-        setError(result.message || "Failed to fetch reminders.");
+        setError(result.message || t("failedToFetchReminders"));
       }
     } catch (error) {
       console.error("Error fetching reminders:", error);
-      setError("An error occurred while fetching reminders.");
+      setError(t("errorFetchingReminders"));
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (id) => {
-    if (!confirm("Are you sure you want to delete this reminder?")) return;
+    if (!confirm(t("confirmDeleteReminder"))) return;
     
     try {
       const response = await fetch(`http://localhost:5000/api/medication-reminders/${id}`, {
@@ -64,11 +66,11 @@ const ReminderList = ({ refreshTrigger }) => {
       if (result.success) {
         fetchReminders();
       } else {
-        setError(result.message || "Failed to delete reminder.");
+        setError(result.message || t("failedToDeleteReminder"));
       }
     } catch (error) {
       console.error("Error deleting reminder:", error);
-      setError("An error occurred while deleting the reminder.");
+      setError(t("errorDeletingReminder"));
     }
   };
 
@@ -86,11 +88,11 @@ const ReminderList = ({ refreshTrigger }) => {
       if (result.success) {
         fetchReminders();
       } else {
-        setError(result.message || 'Failed to mark medication as taken');
+        setError(result.message || t('failedToMarkMedication'));
       }
     } catch (error) {
       console.error('Error marking medication as taken:', error);
-      setError('An error occurred while marking medication as taken');
+      setError(t('errorMarkingMedication'));
     }
   };
 
@@ -141,11 +143,11 @@ const ReminderList = ({ refreshTrigger }) => {
         setEditingReminder(null);
         fetchReminders();
       } else {
-        setError(result.message || "Failed to update reminder.");
+        setError(result.message || t("failedToUpdateReminder"));
       }
     } catch (error) {
       console.error("Error updating reminder:", error);
-      setError("An error occurred while updating the reminder.");
+      setError(t("errorUpdatingReminder"));
     }
   };
 
@@ -157,7 +159,7 @@ const ReminderList = ({ refreshTrigger }) => {
       hour: '2-digit',
       minute: '2-digit'
     };
-    return new Date(dateString).toLocaleString(undefined, options);
+    return new Date(dateString).toLocaleString(i18n.language === 'hi' ? 'hi-IN' : 'en-US', options);
   };
 
   useEffect(() => {
@@ -177,7 +179,7 @@ const ReminderList = ({ refreshTrigger }) => {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Active Medication Reminders</h2>
+      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">{t('activeMedicationReminders')}</h2>
       
       {error && (
         <motion.div 
@@ -187,7 +189,7 @@ const ReminderList = ({ refreshTrigger }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <strong className="font-bold">Error!</strong>
+          <strong className="font-bold">{t('error')}!</strong>
           <span className="block sm:inline ml-2">{error}</span>
         </motion.div>
       )}
@@ -195,10 +197,10 @@ const ReminderList = ({ refreshTrigger }) => {
       {loading && reminders.length === 0 ? (
         <div className="text-center p-4">
           <div className="animate-spin inline-block w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full" />
-          <p className="mt-4 text-gray-600">Loading reminders...</p>
+          <p className="mt-4 text-gray-600">{t('loadingReminders')}</p>
         </div>
       ) : reminders.length === 0 ? (
-        <p className="text-gray-500 italic text-center py-4">No reminders found. Create your first reminder using the form.</p>
+        <p className="text-gray-500 italic text-center py-4">{t('noRemindersFound')}</p>
       ) : (
         <div className="space-y-4">
           <AnimatePresence> {/* Enable exit animations */}
@@ -218,7 +220,7 @@ const ReminderList = ({ refreshTrigger }) => {
                 {editingReminder === reminder._id ? (
                   <form onSubmit={handleUpdate} className="space-y-3">
                     <div className="flex flex-col">
-                      <label htmlFor={`edit-name-${reminder._id}`} className="text-sm font-semibold text-gray-700 mb-1">Medication Name:</label>
+                      <label htmlFor={`edit-name-${reminder._id}`} className="text-sm font-semibold text-gray-700 mb-1">{t('medicationName')}:</label>
                       <input 
                         type="text" 
                         name="name" 
@@ -230,7 +232,7 @@ const ReminderList = ({ refreshTrigger }) => {
                       />
                     </div>
                     <div className="flex flex-col">
-                      <label htmlFor={`edit-dosage-${reminder._id}`} className="text-sm font-semibold text-gray-700 mb-1">Dosage:</label>
+                      <label htmlFor={`edit-dosage-${reminder._id}`} className="text-sm font-semibold text-gray-700 mb-1">{t('dosage')}:</label>
                       <input 
                         type="text" 
                         name="dosage" 
@@ -242,7 +244,7 @@ const ReminderList = ({ refreshTrigger }) => {
                       />
                     </div>
                     <div className="flex flex-col">
-                      <label htmlFor={`edit-instruction-${reminder._id}`} className="text-sm font-semibold text-gray-700 mb-1">Instructions:</label>
+                      <label htmlFor={`edit-instruction-${reminder._id}`} className="text-sm font-semibold text-gray-700 mb-1">{t('instructions')}:</label>
                       <input 
                         type="text" 
                         name="instruction" 
@@ -254,7 +256,7 @@ const ReminderList = ({ refreshTrigger }) => {
                       />
                     </div>
                     <div className="flex flex-col">
-                      <label htmlFor={`edit-datetime-${reminder._id}`} className="text-sm font-semibold text-gray-700 mb-1">Start Date & Time:</label>
+                      <label htmlFor={`edit-datetime-${reminder._id}`} className="text-sm font-semibold text-gray-700 mb-1">{t('startDateTime')}:</label>
                       <input 
                         type="datetime-local" 
                         name="date_time" 
@@ -266,7 +268,7 @@ const ReminderList = ({ refreshTrigger }) => {
                       />
                     </div>
                     <div className="flex flex-col">
-                      <label htmlFor={`edit-frequency-${reminder._id}`} className="text-sm font-semibold text-gray-700 mb-1">Frequency:</label>
+                      <label htmlFor={`edit-frequency-${reminder._id}`} className="text-sm font-semibold text-gray-700 mb-1">{t('frequency')}:</label>
                       <div className="relative">
                         <select 
                           name="frequency" 
@@ -275,9 +277,9 @@ const ReminderList = ({ refreshTrigger }) => {
                           onChange={handleChange}
                           className="block appearance-none w-full bg-white border border-gray-300 text-gray-800 py-2 px-3 pr-8 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                         >
-                          <option value="daily">Daily</option>
-                          <option value="weekly">Weekly</option>
-                          <option value="monthly">Monthly</option>
+                          <option value="daily">{t('daily')}</option>
+                          <option value="weekly">{t('weekly')}</option>
+                          <option value="monthly">{t('monthly')}</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -285,7 +287,7 @@ const ReminderList = ({ refreshTrigger }) => {
                       </div>
                     </div>
                     <div className="flex flex-col">
-                      <label htmlFor={`edit-email-${reminder._id}`} className="text-sm font-semibold text-gray-700 mb-1">Email:</label>
+                      <label htmlFor={`edit-email-${reminder._id}`} className="text-sm font-semibold text-gray-700 mb-1">{t('email')}:</label>
                       <input 
                         type="email" 
                         name="email" 
@@ -303,7 +305,7 @@ const ReminderList = ({ refreshTrigger }) => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        Save
+                        {t('save')}
                       </motion.button>
                       <motion.button 
                         type="button" 
@@ -312,7 +314,7 @@ const ReminderList = ({ refreshTrigger }) => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        Cancel
+                        {t('cancel')}
                       </motion.button>
                     </div>
                   </form>
@@ -329,7 +331,7 @@ const ReminderList = ({ refreshTrigger }) => {
                             <motion.button
                               onClick={() => handleComplete(reminder._id)}
                               className="w-6 h-6 border-2 border-gray-400 rounded-full flex items-center justify-center text-gray-400 hover:border-blue-500 hover:text-blue-500 transition-colors duration-200"
-                              title="Mark as taken"
+                              title={t('markAsTaken')}
                               whileHover={{ scale: 1.1 }}
                               whileTap={{ scale: 0.9 }}
                             >
@@ -347,7 +349,7 @@ const ReminderList = ({ refreshTrigger }) => {
                         </div>
                       </div>
                       <div className="text-xs font-medium text-gray-500 mt-1 flex-shrink-0">
-                        {reminder.frequency.charAt(0).toUpperCase() + reminder.frequency.slice(1)}
+                        {t(reminder.frequency)}
                       </div>
                     </div>
                     
@@ -359,10 +361,10 @@ const ReminderList = ({ refreshTrigger }) => {
                     
                     <div className="flex flex-wrap justify-between items-center mt-3 text-xs text-gray-500">
                       <p className="mr-2"> {/* Added mr-2 for spacing */}
-                        Next: <span className="font-medium text-gray-700">{formatDate(reminder.date_time)}</span>
+                        {t('next')}: <span className="font-medium text-gray-700">{formatDate(reminder.date_time)}</span>
                       </p>
                       <p className="text-gray-600">
-                        Email: <span className="font-medium">{reminder.email}</span>
+                        {t('email')}: <span className="font-medium">{reminder.email}</span>
                       </p>
                     </div>
                     
@@ -374,7 +376,7 @@ const ReminderList = ({ refreshTrigger }) => {
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
-                          <Edit3 className="w-4 h-4 mr-1" /> Edit
+                          <Edit3 className="w-4 h-4 mr-1" /> {t('edit')}
                         </motion.button>
                         <motion.button 
                           onClick={() => handleDelete(reminder._id)}
@@ -382,7 +384,7 @@ const ReminderList = ({ refreshTrigger }) => {
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
-                          <Trash2 className="w-4 h-4 mr-1" /> Delete
+                          <Trash2 className="w-4 h-4 mr-1" /> {t('delete')}
                         </motion.button>
                       </div>
                     )}

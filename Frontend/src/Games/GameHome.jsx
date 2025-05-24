@@ -14,6 +14,7 @@ import {
   Legend
 } from 'chart.js';
 import React from 'react';
+import { useTranslation } from 'react-i18next'; // Import translation hook
 
 ChartJS.register(
   CategoryScale,
@@ -31,6 +32,7 @@ function GameHome() {
   const [loading, setLoading] = useState(true);
   const [gameData, setGameData] = useState([]);
   const [chartType, setChartType] = useState('line'); // Toggle between line and bar charts
+  const { t } = useTranslation(); // Initialize translation hook
 
   // Load user data from localStorage
   useEffect(() => {
@@ -315,7 +317,7 @@ function GameHome() {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Score', // Or 'Average Score' for bar chart
+          text: t('score'),
           color: '#333333' // Dark gray for Y-axis title
         },
         ticks: {
@@ -328,7 +330,7 @@ function GameHome() {
       x: {
         title: {
           display: true,
-          text: 'Date', // Or empty for bar chart
+          text: t('date'),
           color: '#333333' // Dark gray for X-axis title
         },
         ticks: {
@@ -347,7 +349,7 @@ function GameHome() {
       ...commonChartOptions.plugins,
       title: {
         ...commonChartOptions.plugins.title,
-        text: 'Game Performance Over Time',
+        text: t('gamePerformanceOverTime'),
       }
     },
     scales: {
@@ -376,7 +378,7 @@ function GameHome() {
       },
       title: {
         ...commonChartOptions.plugins.title,
-        text: 'Average Performance Comparison',
+        text: t('averagePerformanceComparison'),
       }
     },
     scales: {
@@ -442,112 +444,113 @@ function GameHome() {
   const stats = getPerformanceStats();
 
   return (
-    <div className="max-w-6xl mx-auto p-4 sm:p-5 bg-gray-800 shadow-xl sm:mt-5" >      <GameNav user={user} />
-    <div>
-      <div >
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-indigo-400 text-center mb-6 sm:mb-8">EchoMind Games</h2>
+    <div className="max-w-6xl mx-auto p-4 sm:p-5 bg-gray-800 shadow-xl sm:mt-5">
+      <GameNav user={user} />
+      <div>
+        <div>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-indigo-400 text-center mb-6 sm:mb-8">{t('echoMindGames')}</h2>
 
-        {/* Performance Dashboard */}
-        <div className="bg-gray-700 p-4 sm:p-6 rounded-lg shadow-md mb-8 sm:mb-10">
-          {/* Chart Controls */}
-          <div className="flex flex-col sm:flex-row justify-center mb-4 sm:mb-5 space-y-2 sm:space-y-0 sm:space-x-4">
-            <button
-              className={`w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-2 rounded-md text-base sm:text-lg font-semibold transition-colors duration-300
-                ${chartType === 'line' ? 'bg-indigo-600 text-white shadow-md' : 'bg-gray-600 text-gray-300 hover:bg-gray-500'}`}
-              onClick={() => setChartType('line')}
-            >
-              Performance Over Time
-            </button>
-            <button
-              className={`w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-2 rounded-md text-base sm:text-lg font-semibold transition-colors duration-300
-                ${chartType === 'bar' ? 'bg-indigo-600 text-white shadow-md' : 'bg-gray-600 text-gray-300 hover:bg-gray-500'}`}
-              onClick={() => setChartType('bar')}
-            >
-              Average Comparison
-            </button>
-          </div>
+          {/* Performance Dashboard */}
+          <div className="bg-gray-700 p-4 sm:p-6 rounded-lg shadow-md mb-8 sm:mb-10">
+            {/* Chart Controls */}
+            <div className="flex flex-col sm:flex-row justify-center mb-4 sm:mb-5 space-y-2 sm:space-y-0 sm:space-x-4">
+              <button
+                className={`w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-2 rounded-md text-base sm:text-lg font-semibold transition-colors duration-300
+                  ${chartType === 'line' ? 'bg-indigo-600 text-white shadow-md' : 'bg-gray-600 text-gray-300 hover:bg-gray-500'}`}
+                onClick={() => setChartType('line')}
+              >
+                {t('performanceOverTime')}
+              </button>
+              <button
+                className={`w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-2 rounded-md text-base sm:text-lg font-semibold transition-colors duration-300
+                  ${chartType === 'bar' ? 'bg-indigo-600 text-white shadow-md' : 'bg-gray-600 text-gray-300 hover:bg-gray-500'}`}
+                onClick={() => setChartType('bar')}
+              >
+                {t('averageComparison')}
+              </button>
+            </div>
 
-          {/* Chart Container - Add height style to ensure visibility */}
-          <div className="relative h-[300px] sm:h-[400px] w-full bg-white rounded-lg p-2 sm:p-3 shadow-inner">
-            {displayData && displayData.length > 0 ? (
-              chartType === 'line' ? (
-                <Line
-                  options={lineChartOptions}
-                  data={getLineChartData()}
-                />
+            {/* Chart Container - Add height style to ensure visibility */}
+            <div className="relative h-[300px] sm:h-[400px] w-full bg-white rounded-lg p-2 sm:p-3 shadow-inner">
+              {displayData && displayData.length > 0 ? (
+                chartType === 'line' ? (
+                  <Line
+                    options={lineChartOptions}
+                    data={getLineChartData()}
+                  />
+                ) : (
+                  <Bar
+                    options={barChartOptions}
+                    data={getBarChartData()}
+                  />
+                )
               ) : (
-                <Bar
-                  options={barChartOptions}
-                  data={getBarChartData()}
-                />
-              )
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center text-gray-400 text-base sm:text-xl font-medium">
-                {loading ? 'Loading game data...' : 'Play some games to see your performance chart!'}
+                <div className="absolute inset-0 flex items-center justify-center text-gray-400 text-base sm:text-xl font-medium">
+                  {loading ? t('loadingGameData') : t('playGamesToSeeChart')}
+                </div>
+              )}
+            </div>
+
+            {/* Performance Statistics */}
+            {stats && (
+              <div className="bg-gray-700 p-4 sm:p-6 rounded-lg shadow-md mt-6 sm:mt-8">
+                <h3 className="text-2xl sm:text-3xl font-bold text-indigo-400 text-center mb-4 sm:mb-6">{t('performanceSummary')}</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-center">
+                  <div className="bg-gray-800 p-3 sm:p-5 rounded-lg border border-gray-600 shadow-sm">
+                    <div className="text-3xl sm:text-5xl font-extrabold text-green-400 mb-1 sm:mb-2">{stats.totalGames}</div>
+                    <div className="text-sm sm:text-xl text-gray-300">{t('totalGamesPlayed')}</div>
+                  </div>
+                  <div className="bg-gray-800 p-3 sm:p-5 rounded-lg border border-gray-600 shadow-sm">
+                    <div className="text-3xl sm:text-5xl font-extrabold text-yellow-400 mb-1 sm:mb-2">{stats.overallAverage}</div>
+                    <div className="text-sm sm:text-xl text-gray-300">{t('overallAverageScore')}</div>
+                  </div>
+                  <div className="bg-gray-800 p-3 sm:p-5 rounded-lg border border-gray-600 shadow-sm">
+                    <div className="text-xl sm:text-3xl font-bold text-blue-400 mb-1 sm:mb-2">
+                      {t(stats.bestGame.replace(/-/g, ''))}
+                    </div>
+                    <div className="text-sm sm:text-xl text-gray-300">{t('bestPerformingGame')}</div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
 
-          {/* Performance Statistics */}
-          {stats && (
-            <div className="bg-gray-700 p-4 sm:p-6 rounded-lg shadow-md mt-6 sm:mt-8">
-              <h3 className="text-2xl sm:text-3xl font-bold text-indigo-400 text-center mb-4 sm:mb-6">Performance Summary</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-center">
-                <div className="bg-gray-800 p-3 sm:p-5 rounded-lg border border-gray-600 shadow-sm">
-                  <div className="text-3xl sm:text-5xl font-extrabold text-green-400 mb-1 sm:mb-2">{stats.totalGames}</div>
-                  <div className="text-sm sm:text-xl text-gray-300">Total Games Played</div>
-                </div>
-                <div className="bg-gray-800 p-3 sm:p-5 rounded-lg border border-gray-600 shadow-sm">
-                  <div className="text-3xl sm:text-5xl font-extrabold text-yellow-400 mb-1 sm:mb-2">{stats.overallAverage}</div>
-                  <div className="text-sm sm:text-xl text-gray-300">Overall Average Score</div>
-                </div>
-                <div className="bg-gray-800 p-3 sm:p-5 rounded-lg border border-gray-600 shadow-sm">
-                  <div className="text-xl sm:text-3xl font-bold text-blue-400 mb-1 sm:mb-2">
-                    {stats.bestGame.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                  </div>
-                  <div className="text-sm sm:text-xl text-gray-300">Best Performing Game</div>
-                </div>
+          {/* Games Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mt-8 sm:mt-10">
+            <div className="bg-gray-700 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+              <div className="p-4 sm:p-6 text-center">
+                <h3 className="text-xl sm:text-2xl font-bold text-emerald-400 mb-2 sm:mb-3">{t('simonSays')}</h3>
+                <p className="text-gray-300 text-sm sm:text-base mb-4 sm:mb-5">{t('simonSaysDesc')}</p>
+                <Link to="/games/simon-says" className="inline-block bg-emerald-600 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-md font-semibold hover:bg-emerald-700 transition-colors duration-300 text-sm sm:text-base">{t('play')}</Link>
               </div>
             </div>
-          )}
-        </div>
 
-        {/* Games Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mt-8 sm:mt-10">
-          <div className="bg-gray-700 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-            <div className="p-4 sm:p-6 text-center">
-              <h3 className="text-xl sm:text-2xl font-bold text-emerald-400 mb-2 sm:mb-3">Simon Says</h3>
-              <p className="text-gray-300 text-sm sm:text-base mb-4 sm:mb-5">Test your memory by repeating sequences of colors and sounds.</p>
-              <Link to="/games/simon-says" className="inline-block bg-emerald-600 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-md font-semibold hover:bg-emerald-700 transition-colors duration-300 text-sm sm:text-base">Play</Link>
+            <div className="bg-gray-700 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+              <div className="p-4 sm:p-6 text-center">
+                <h3 className="text-xl sm:text-2xl font-bold text-yellow-400 mb-2 sm:mb-3">{t('wordScramble')}</h3>
+                <p className="text-gray-300 text-sm sm:text-base mb-4 sm:mb-5">{t('wordScrambleDesc')}</p>
+                <Link to="/games/word-scramble" className="inline-block bg-yellow-600 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-md font-semibold hover:bg-yellow-700 transition-colors duration-300 text-sm sm:text-base">{t('play')}</Link>
+              </div>
             </div>
-          </div>
 
-          <div className="bg-gray-700 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-            <div className="p-4 sm:p-6 text-center">
-              <h3 className="text-xl sm:text-2xl font-bold text-yellow-400 mb-2 sm:mb-3">Word Scramble</h3>
-              <p className="text-gray-300 text-sm sm:text-base mb-4 sm:mb-5">Unscramble letters to form meaningful words.</p>
-              <Link to="/games/word-scramble" className="inline-block bg-yellow-600 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-md font-semibold hover:bg-yellow-700 transition-colors duration-300 text-sm sm:text-base">Play</Link>
+            <div className="bg-gray-700 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+              <div className="p-4 sm:p-6 text-center">
+                <h3 className="text-xl sm:text-2xl font-bold text-blue-400 mb-2 sm:mb-3">{t('visualLocationMemory')}</h3>
+                <p className="text-gray-300 text-sm sm:text-base mb-4 sm:mb-5">{t('visualLocationMemoryDesc')}</p>
+                <Link to="/games/visual-location" className="inline-block bg-blue-600 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-md font-semibold hover:bg-blue-700 transition-colors duration-300 text-sm sm:text-base">{t('play')}</Link>
+              </div>
             </div>
-          </div>
 
-          <div className="bg-gray-700 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-            <div className="p-4 sm:p-6 text-center">
-              <h3 className="text-xl sm:text-2xl font-bold text-blue-400 mb-2 sm:mb-3">Visual Location Memory</h3>
-              <p className="text-gray-300 text-sm sm:text-base mb-4 sm:mb-5">Remember and match the positions of objects on a grid.</p>
-              <Link to="/games/visual-location" className="inline-block bg-blue-600 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-md font-semibold hover:bg-blue-700 transition-colors duration-300 text-sm sm:text-base">Play</Link>
-            </div>
-          </div>
-
-          <div className="bg-gray-700 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-            <div className="p-4 sm:p-6 text-center">
-              <h3 className="text-xl sm:text-2xl font-bold text-red-400 mb-2 sm:mb-3">Picture Match</h3>
-              <p className="text-gray-300 text-sm sm:text-base mb-4 sm:mb-5">Find matching pairs of cards to test your visual memory.</p>
-              <Link to="/games/picture-match" className="inline-block bg-red-600 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-md font-semibold hover:bg-red-700 transition-colors duration-300 text-sm sm:text-base">Play</Link>
+            <div className="bg-gray-700 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+              <div className="p-4 sm:p-6 text-center">
+                <h3 className="text-xl sm:text-2xl font-bold text-red-400 mb-2 sm:mb-3">{t('pictureMatch')}</h3>
+                <p className="text-gray-300 text-sm sm:text-base mb-4 sm:mb-5">{t('pictureMatchDesc')}</p>
+                <Link to="/games/picture-match" className="inline-block bg-red-600 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-md font-semibold hover:bg-red-700 transition-colors duration-300 text-sm sm:text-base">{t('play')}</Link>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   );
 }

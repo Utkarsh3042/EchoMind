@@ -3,8 +3,10 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion'; // Import motion from framer-motion
+import { useTranslation } from 'react-i18next'; // Import translation hook
 
 function Summary() {
+  const { t } = useTranslation(); // Initialize translation hook
   const [knownPersons, setKnownPersons] = useState([]);
   const [selectedPersonId, setSelectedPersonId] = useState('');
   const [summaryData, setSummaryData] = useState(null);
@@ -21,7 +23,7 @@ function Summary() {
         setIsLoading(true);
 
         if (!patientId) {
-          setError('Authentication information missing. Please log in again.');
+          setError(t('authMissing'));
           setIsLoading(false);
           return;
         }
@@ -35,7 +37,7 @@ function Summary() {
             setSelectedPersonId(response.data.known_persons[0].known_person_id);
           }
         } else {
-          setError(response.data.error || 'Failed to fetch known persons');
+          setError(response.data.error || t('failedToFetchPersons'));
         }
 
         setIsLoading(false);
@@ -45,7 +47,7 @@ function Summary() {
           console.error('Response data:', err.response.data);
           console.error('Response status:', err.response.status);
         }
-        setError('Failed to fetch known persons. Please try again later.');
+        setError(t('failedToFetchPersonsTryAgain'));
         setIsLoading(false);
       }
     };
@@ -53,11 +55,11 @@ function Summary() {
     if (patientId) {
       fetchKnownPersons();
     }
-  }, [patientId, selectedPersonId]);
+  }, [patientId, selectedPersonId, t]);
 
   const fetchDateSummary = async () => {
     if (!selectedPersonId) {
-      setError('Please select a known person first');
+      setError(t('pleaseSelectPerson'));
       return;
     }
 
@@ -77,7 +79,7 @@ function Summary() {
       setSummaryData(response.data);
       setIsLoading(false);
     } catch (err) {
-      setError('Failed to fetch summary. Please try again later.');
+      setError(t('failedToFetchSummary'));
       setIsLoading(false);
       console.error('Error fetching summary:', err);
     }
@@ -85,7 +87,7 @@ function Summary() {
 
   const fetchAllSummaries = async () => {
     if (!selectedPersonId) {
-      setError('Please select a known person first');
+      setError(t('pleaseSelectPerson'));
       return;
     }
 
@@ -104,7 +106,7 @@ function Summary() {
       setSummaryData(response.data);
       setIsLoading(false);
     } catch (err) {
-      setError('Failed to fetch all summaries. Please try again later.');
+      setError(t('failedToFetchAllSummaries'));
       setIsLoading(false);
       console.error('Error fetching all summaries:', err);
     }
@@ -145,7 +147,7 @@ function Summary() {
 
   const getSelectedPersonName = () => {
     const person = knownPersons.find(p => p.known_person_id === selectedPersonId);
-    return person ? person.name : 'Unknown Person';
+    return person ? person.name : t('unknownPerson');
   };
 
   const renderSummaryContent = (summary) => {
@@ -179,7 +181,7 @@ function Summary() {
     }
 
     if (Object.keys(sections).length === 0 && summary.trim()) {
-      sections['Summary'] = summary;
+      sections[t('summary')] = summary;
     }
 
     return (
@@ -245,7 +247,7 @@ function Summary() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 100, damping: 15, delay: 0.1 }}
       >
-        <h1 className="text-3xl font-extrabold text-white mb-4 sm:mb-0">Conversation Insights</h1>
+        <h1 className="text-3xl font-extrabold text-white mb-4 sm:mb-0">{t('conversationInsights')}</h1>
         <div className="flex gap-4">
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -253,7 +255,7 @@ function Summary() {
             onClick={handleDashboardClick}
             className="px-6 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg shadow-md transition duration-300 ease-in-out text-white font-semibold border border-black"
           >
-            Dashboard
+            {t('dashboard')}
           </motion.button>
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -261,7 +263,7 @@ function Summary() {
             onClick={handleLogoutClick}
             className="px-6 py-2 bg-red-600 hover:bg-red-700 rounded-lg shadow-md transition duration-300 ease-in-out text-white font-semibold border border-black"
           >
-            Logout
+            {t('logout')}
           </motion.button>
         </div>
       </motion.nav>
@@ -294,17 +296,16 @@ function Summary() {
         <div className="flex flex-col sm:flex-row gap-6">
           <motion.div variants={itemVariants} className="flex-1">
             <label htmlFor="personSelect" className="block text-gray-200 text-sm font-semibold mb-2">
-              Select Known Person
+              {t('selectKnownPerson')}
             </label>
             <select
               id="personSelect"
               value={selectedPersonId}
               onChange={handlePersonChange}
-              // REMOVED 'appearance-none' from here
               className="w-full p-3 rounded-lg bg-gray-700 bg-opacity-50 border border-black text-white focus:ring-2 focus:ring-purple-400 focus:border-transparent transition duration-200 backdrop-blur-sm"
               disabled={isLoading || knownPersons.length === 0}
             >
-              <option value="" className="bg-gray-800 text-gray-300">Select a person...</option>
+              <option value="" className="bg-gray-800 text-gray-300">{t('selectPerson')}</option>
               {knownPersons.map((person) => (
                 <option key={person.known_person_id} value={person.known_person_id} className="bg-gray-800 text-white">
                   {person.name}
@@ -315,7 +316,7 @@ function Summary() {
 
           <motion.div variants={itemVariants} className="flex-1">
             <label htmlFor="dateSelect" className="block text-gray-200 text-sm font-semibold mb-2">
-              Select Date for Single Day Summary
+              {t('selectDateForSummary')}
             </label>
             <input
               type="date"
@@ -339,7 +340,7 @@ function Summary() {
           >
             {isLoading ? (
               <>
-                <span className="animate-pulse">Loading...</span>
+                <span className="animate-pulse">{t('loading')}</span>
               </>
             ) : (
               <>
@@ -349,7 +350,7 @@ function Summary() {
                   <line x1="8" y1="2" x2="8" y2="6"></line>
                   <line x1="3" y1="10" x2="21" y2="10"></line>
                 </svg>
-                Get Summary for Selected Date
+                {t('getSummaryForSelectedDate')}
               </>)}
           </motion.button>
 
@@ -362,7 +363,7 @@ function Summary() {
           >
             {isLoading ? (
               <>
-                <span className="animate-pulse">Loading...</span>
+                <span className="animate-pulse">{t('loading')}</span>
               </>
             ) : (
               <>
@@ -370,7 +371,7 @@ function Summary() {
                   <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                   <polyline points="9 22 9 12 15 12 15 22"></polyline>
                 </svg>
-                Get All Conversations Summary
+                {t('getAllConversationsSummary')}
               </>
             )}
           </motion.button>
@@ -401,13 +402,13 @@ function Summary() {
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-purple-300">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                 </svg>
-                <span>{summaryData.conversation_count} messages</span>
+                <span>{t('messagesCount', { count: summaryData.conversation_count })}</span>
               </div>
               <div className="flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-purple-300">
                   <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
                 </svg>
-                <span>{summaryData.conversation_length} characters</span>
+                <span>{t('charactersCount', { count: summaryData.conversation_length })}</span>
               </div>
             </div>
           </div>
@@ -423,7 +424,7 @@ function Summary() {
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                   <circle cx="12" cy="12" r="3"></circle>
                 </svg>
-                Key Insights
+                {t('keyInsights')}
               </h3>
               {summaryData.success ? (
                 <div className="text-gray-100 text-lg leading-relaxed">
@@ -431,7 +432,7 @@ function Summary() {
                 </div>
               ) : (
                 <p className="text-yellow-400 text-lg">
-                  {summaryData.summary || 'No summary available for this conversation.'}
+                  {summaryData.summary || t('noSummaryAvailable')}
                 </p>
               )}
             </motion.div>
@@ -446,7 +447,7 @@ function Summary() {
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-300">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                   </svg>
-                  Original Messages
+                  {t('originalMessages')}
                 </h3>
                 <div className="space-y-4 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
                   {summaryData.original_messages.map((message, index) => (
@@ -463,7 +464,7 @@ function Summary() {
                     >
                       <div className="flex items-center justify-between w-full mb-1">
                         <span className="font-semibold text-sm">
-                          {message.speaker === 'You' ? 'You' : getSelectedPersonName()}
+                          {message.speaker === 'You' ? t('you') : getSelectedPersonName()}
                         </span>
                         <span className="text-xs opacity-80">
                           {new Date(message.timestamp).toLocaleString()}
@@ -487,7 +488,7 @@ function Summary() {
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
                   </svg>
-                  Conversation History
+                  {t('conversationHistory')}
                 </h3>
                 <div className="relative border-l-2 border-gray-600 pl-6 custom-scrollbar max-h-96 overflow-y-auto">
                   {summaryData.conversation_dates && summaryData.conversation_dates.map((date, idx) => (
@@ -516,7 +517,7 @@ function Summary() {
                           >
                             <div className="flex items-center justify-between w-full mb-1">
                               <span className="font-semibold text-sm">
-                                {message.speaker === 'You' ? 'You' : getSelectedPersonName()}
+                                {message.speaker === 'You' ? t('you') : getSelectedPersonName()}
                               </span>
                               <span className="text-xs opacity-80">
                                 {new Date(message.timestamp).toLocaleTimeString()}
@@ -545,7 +546,7 @@ function Summary() {
           transition={{ duration: 0.3 }}
         >
           <div className="animate-spin h-12 w-12 border-4 border-purple-400 border-t-transparent rounded-full mb-4"></div>
-          <p className="text-white text-lg font-semibold">Analyzing conversations...</p>
+          <p className="text-white text-lg font-semibold">{t('analyzingConversations')}</p>
         </motion.div>
       )}
 
@@ -560,8 +561,8 @@ function Summary() {
           <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="opacity-50 mb-4">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
           </svg>
-          <p className="text-lg text-center">Select options and click a button to see conversation summaries.</p>
-          <p className="text-sm text-center mt-2">No summary data found for the selected person or date.</p>
+          <p className="text-lg text-center">{t('selectOptionsToSeeSummaries')}</p>
+          <p className="text-sm text-center mt-2">{t('noSummaryDataFound')}</p>
         </motion.div>
       )}
     </div>

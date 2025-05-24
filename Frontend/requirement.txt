@@ -1,3 +1,4 @@
 npm i install
 npm install tailwindcss @tailwindcss/vite
 npm i axios react-router-dom framer-motion react-feather lucide-react date-fns react-chartjs-2
+npm install i18next react-i18next
