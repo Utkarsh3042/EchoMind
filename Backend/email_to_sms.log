@@ -1,0 +1,211 @@
+2025-05-25 00:11:25,115 - __main__ - INFO - Starting Email to SMS service
+2025-05-25 00:11:25,115 - __main__ - INFO - Testing SMS functionality...
+2025-05-25 00:11:25,115 - __main__ - INFO - Starting direct SMS test
+2025-05-25 00:11:25,115 - __main__ - INFO - Attempting to send SMS to +91 7989365276
+2025-05-25 00:11:25,115 - __main__ - INFO - Sending SMS from +12314325044 to +917989365276
+2025-05-25 00:11:25,115 - __main__ - INFO - Message content: This is a test message from EchoMind SMS service at 2025-05-25 00:11:25
+2025-05-25 00:11:25,545 - twilio.http_client - INFO - -- BEGIN Twilio API Request --
+2025-05-25 00:11:25,547 - twilio.http_client - INFO - POST Request: https://api.twilio.com/2010-04-01/Accounts/ACbac911768f95eb6649933773844e86be/Messages.json
+2025-05-25 00:11:25,547 - twilio.http_client - INFO - Headers:
+2025-05-25 00:11:25,547 - twilio.http_client - INFO - Content-Type : application/x-www-form-urlencoded
+2025-05-25 00:11:25,549 - twilio.http_client - INFO - Accept : application/json
+2025-05-25 00:11:25,549 - twilio.http_client - INFO - User-Agent : twilio-python/9.6.1 (Windows AMD64) Python/3.12.7
+2025-05-25 00:11:25,550 - twilio.http_client - INFO - X-Twilio-Client : python-9.6.1
+2025-05-25 00:11:25,551 - twilio.http_client - INFO - Accept-Charset : utf-8
+2025-05-25 00:11:25,551 - twilio.http_client - INFO - -- END Twilio API Request --
+2025-05-25 00:11:26,166 - twilio.http_client - INFO - Response Status Code: 400
+2025-05-25 00:11:26,168 - twilio.http_client - INFO - Response Headers: {'Content-Type': 'application/json', 'Content-Length': '332', 'Connection': 'keep-alive', 'Date': 'Sat, 24 May 2025 18:41:24 GMT', 'X-Powered-By': 'AT-5000', 'X-Twilio-Error-Code': '21608', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ5cd0a48101b7f92a058f9ec273e31352', 'Twilio-Request-Duration': '0.089', 'X-Home-Region': 'us1', 'X-Api-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Shenanigans': 'none', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 11aba84a9f4f67a96e35682e5935c436.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'HKG54-P1', 'X-Amz-Cf-Id': 'VkohFEsfNQou15abQVIE9qXNcjwOKaK0uVjUN9sjoy5UDPKPi-qk0A==', 'Vary': 'Origin'}
+2025-05-25 00:11:26,188 - __main__ - ERROR - Twilio error sending SMS: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Accounts/ACbac911768f95eb6649933773844e86be/Messages.json[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The number +91798936XXXX is unverified. Trial accounts cannot send messages to unverified numbers; verify +91798936XXXX at twilio.com/user/account/phone-numbers/verified, or purchase a Twilio number to send messages to unverified numbers[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-05-25 00:11:26,191 - __main__ - ERROR - Twilio error code: 21608
+2025-05-25 00:11:26,191 - __main__ - ERROR - Invalid 'From' phone number. Check your Twilio phone number.
+2025-05-25 00:11:26,193 - __main__ - ERROR - Failed to send test SMS
+2025-05-25 00:11:26,193 - __main__ - INFO - SMS test result: Failed
+2025-05-25 00:11:26,194 - __main__ - ERROR - SMS test failed. Check your Twilio credentials and phone numbers.
+2025-05-25 00:11:26,194 - __main__ - ERROR - Make sure TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, and RECIPIENT_PHONE_NUMBER are set correctly.
+2025-05-25 00:12:31,917 - __main__ - INFO - Starting Email to SMS service
+2025-05-25 00:12:31,917 - __main__ - INFO - Testing SMS functionality...
+2025-05-25 00:12:31,917 - __main__ - INFO - Starting direct SMS test
+2025-05-25 00:12:31,917 - __main__ - INFO - Attempting to send SMS to +91 7989365276
+2025-05-25 00:12:31,917 - __main__ - INFO - Sending SMS from +12314325044 to +917989365276
+2025-05-25 00:12:31,917 - __main__ - INFO - Message content: This is a test message from EchoMind SMS service at 2025-05-25 00:12:31
+2025-05-25 00:12:32,318 - twilio.http_client - INFO - -- BEGIN Twilio API Request --
+2025-05-25 00:12:32,318 - twilio.http_client - INFO - POST Request: https://api.twilio.com/2010-04-01/Accounts/ACbac911768f95eb6649933773844e86be/Messages.json
+2025-05-25 00:12:32,318 - twilio.http_client - INFO - Headers:
+2025-05-25 00:12:32,318 - twilio.http_client - INFO - Content-Type : application/x-www-form-urlencoded
+2025-05-25 00:12:32,318 - twilio.http_client - INFO - Accept : application/json
+2025-05-25 00:12:32,318 - twilio.http_client - INFO - User-Agent : twilio-python/9.6.1 (Windows AMD64) Python/3.12.7
+2025-05-25 00:12:32,318 - twilio.http_client - INFO - X-Twilio-Client : python-9.6.1
+2025-05-25 00:12:32,318 - twilio.http_client - INFO - Accept-Charset : utf-8
+2025-05-25 00:12:32,335 - twilio.http_client - INFO - -- END Twilio API Request --
+2025-05-25 00:12:32,929 - twilio.http_client - INFO - Response Status Code: 400
+2025-05-25 00:12:32,929 - twilio.http_client - INFO - Response Headers: {'Content-Type': 'application/json', 'Content-Length': '332', 'Connection': 'keep-alive', 'Date': 'Sat, 24 May 2025 18:42:31 GMT', 'X-Powered-By': 'AT-5000', 'X-Twilio-Error-Code': '21608', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQedb600fb53f48de3020507603f304308', 'Twilio-Request-Duration': '0.077', 'X-Home-Region': 'us1', 'X-Api-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Shenanigans': 'none', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 dac8b23bf45fd8f9ba7a740285471a56.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'HKG54-P1', 'X-Amz-Cf-Id': 'DcwKE_Cp5vWDbVZ0P3AogmUI62c0qYSrxSES8WLOlp8O_USV-vwqCg==', 'Vary': 'Origin'}
+2025-05-25 00:12:32,929 - __main__ - ERROR - Twilio error sending SMS: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Accounts/ACbac911768f95eb6649933773844e86be/Messages.json[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The number +91798936XXXX is unverified. Trial accounts cannot send messages to unverified numbers; verify +91798936XXXX at twilio.com/user/account/phone-numbers/verified, or purchase a Twilio number to send messages to unverified numbers[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-05-25 00:12:32,929 - __main__ - ERROR - Twilio error code: 21608
+2025-05-25 00:12:32,929 - __main__ - ERROR - Invalid 'From' phone number. Check your Twilio phone number.
+2025-05-25 00:12:32,929 - __main__ - ERROR - Failed to send test SMS
+2025-05-25 00:12:32,929 - __main__ - INFO - SMS test result: Failed
+2025-05-25 00:12:32,929 - __main__ - ERROR - SMS test failed. Check your Twilio credentials and phone numbers.
+2025-05-25 00:12:32,929 - __main__ - ERROR - Make sure TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, and RECIPIENT_PHONE_NUMBER are set correctly.
+2025-05-25 00:13:52,634 - __main__ - INFO - Starting Email to SMS service
+2025-05-25 00:13:52,634 - __main__ - INFO - Testing SMS functionality...
+2025-05-25 00:13:52,634 - __main__ - INFO - Starting direct SMS test
+2025-05-25 00:13:52,636 - __main__ - INFO - Attempting to send SMS to +917989365276
+2025-05-25 00:13:52,636 - __main__ - INFO - Sending SMS from +12314325044 to +917989365276
+2025-05-25 00:13:52,637 - __main__ - INFO - Message content: This is a test message from EchoMind SMS service at 2025-05-25 00:13:52
+2025-05-25 00:13:52,984 - twilio.http_client - INFO - -- BEGIN Twilio API Request --
+2025-05-25 00:13:52,984 - twilio.http_client - INFO - POST Request: https://api.twilio.com/2010-04-01/Accounts/ACbac911768f95eb6649933773844e86be/Messages.json
+2025-05-25 00:13:52,984 - twilio.http_client - INFO - Headers:
+2025-05-25 00:13:52,986 - twilio.http_client - INFO - Content-Type : application/x-www-form-urlencoded
+2025-05-25 00:13:52,987 - twilio.http_client - INFO - Accept : application/json
+2025-05-25 00:13:52,987 - twilio.http_client - INFO - User-Agent : twilio-python/9.6.1 (Windows AMD64) Python/3.12.7
+2025-05-25 00:13:52,987 - twilio.http_client - INFO - X-Twilio-Client : python-9.6.1
+2025-05-25 00:13:52,987 - twilio.http_client - INFO - Accept-Charset : utf-8
+2025-05-25 00:13:52,988 - twilio.http_client - INFO - -- END Twilio API Request --
+2025-05-25 00:13:53,428 - twilio.http_client - INFO - Response Status Code: 400
+2025-05-25 00:13:53,431 - twilio.http_client - INFO - Response Headers: {'Content-Type': 'application/json', 'Content-Length': '332', 'Connection': 'keep-alive', 'Date': 'Sat, 24 May 2025 18:43:52 GMT', 'X-Powered-By': 'AT-5000', 'X-Twilio-Error-Code': '21608', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ0b71eb234e9241a8ff3bafe1b8562aab', 'Twilio-Request-Duration': '0.089', 'X-Home-Region': 'us1', 'X-Api-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Shenanigans': 'none', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 4774b00e2d656478bcba37c033ae541c.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'MAA51-P3', 'X-Amz-Cf-Id': 'Osu8yuqssFrEiel7idofcDtyAORE9Fz92x-765UT9ypugI7pmKTjRQ==', 'Vary': 'Origin'}
+2025-05-25 00:13:53,433 - __main__ - ERROR - Twilio error sending SMS: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Accounts/ACbac911768f95eb6649933773844e86be/Messages.json[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The number +91798936XXXX is unverified. Trial accounts cannot send messages to unverified numbers; verify +91798936XXXX at twilio.com/user/account/phone-numbers/verified, or purchase a Twilio number to send messages to unverified numbers[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-05-25 00:13:53,433 - __main__ - ERROR - Twilio error code: 21608
+2025-05-25 00:13:53,433 - __main__ - ERROR - Invalid 'From' phone number. Check your Twilio phone number.
+2025-05-25 00:13:53,434 - __main__ - ERROR - Failed to send test SMS
+2025-05-25 00:13:53,435 - __main__ - INFO - SMS test result: Failed
+2025-05-25 00:13:53,435 - __main__ - ERROR - SMS test failed. Check your Twilio credentials and phone numbers.
+2025-05-25 00:13:53,436 - __main__ - ERROR - Make sure TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, and RECIPIENT_PHONE_NUMBER are set correctly.
+2025-05-25 00:15:17,276 - __main__ - INFO - Starting Email to SMS service
+2025-05-25 00:15:17,276 - __main__ - INFO - Testing SMS functionality...
+2025-05-25 00:15:17,278 - __main__ - INFO - Starting direct SMS test
+2025-05-25 00:15:17,278 - __main__ - INFO - Attempting to send SMS to +918979392188
+2025-05-25 00:15:17,278 - __main__ - INFO - Sending SMS from +12314325044 to +918979392188
+2025-05-25 00:15:17,279 - __main__ - INFO - Message content: This is a test message from EchoMind SMS service at 2025-05-25 00:15:17
+2025-05-25 00:15:17,682 - twilio.http_client - INFO - -- BEGIN Twilio API Request --
+2025-05-25 00:15:17,682 - twilio.http_client - INFO - POST Request: https://api.twilio.com/2010-04-01/Accounts/ACbac911768f95eb6649933773844e86be/Messages.json
+2025-05-25 00:15:17,682 - twilio.http_client - INFO - Headers:
+2025-05-25 00:15:17,682 - twilio.http_client - INFO - Content-Type : application/x-www-form-urlencoded
+2025-05-25 00:15:17,682 - twilio.http_client - INFO - Accept : application/json
+2025-05-25 00:15:17,682 - twilio.http_client - INFO - User-Agent : twilio-python/9.6.1 (Windows AMD64) Python/3.12.7
+2025-05-25 00:15:17,682 - twilio.http_client - INFO - X-Twilio-Client : python-9.6.1
+2025-05-25 00:15:17,688 - twilio.http_client - INFO - Accept-Charset : utf-8
+2025-05-25 00:15:17,688 - twilio.http_client - INFO - -- END Twilio API Request --
+2025-05-25 00:15:18,550 - twilio.http_client - INFO - Response Status Code: 400
+2025-05-25 00:15:18,566 - twilio.http_client - INFO - Response Headers: {'Content-Type': 'application/json', 'Content-Length': '332', 'Connection': 'keep-alive', 'Date': 'Sat, 24 May 2025 18:45:17 GMT', 'X-Powered-By': 'AT-5000', 'X-Twilio-Error-Code': '21608', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQf5a01a137cbec1e575506598564bb02d', 'Twilio-Request-Duration': '0.072', 'X-Home-Region': 'us1', 'X-Api-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Shenanigans': 'none', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 b54ed05222d6420c578fc810016a0a96.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'MAA51-P3', 'X-Amz-Cf-Id': 'ZVZJKPtzMG9WojFbmKXTon3pNQkcrmX9ekuu9HT0uLyJXfnj4rG5sA==', 'Vary': 'Origin'}
+2025-05-25 00:15:18,568 - __main__ - ERROR - Twilio error sending SMS: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Accounts/ACbac911768f95eb6649933773844e86be/Messages.json[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The number +91897939XXXX is unverified. Trial accounts cannot send messages to unverified numbers; verify +91897939XXXX at twilio.com/user/account/phone-numbers/verified, or purchase a Twilio number to send messages to unverified numbers[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-05-25 00:15:18,568 - __main__ - ERROR - Twilio error code: 21608
+2025-05-25 00:15:18,569 - __main__ - ERROR - Invalid 'From' phone number. Check your Twilio phone number.
+2025-05-25 00:15:18,569 - __main__ - ERROR - Failed to send test SMS
+2025-05-25 00:15:18,581 - __main__ - INFO - SMS test result: Failed
+2025-05-25 00:15:18,583 - __main__ - ERROR - SMS test failed. Check your Twilio credentials and phone numbers.
+2025-05-25 00:15:18,584 - __main__ - ERROR - Make sure TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, and RECIPIENT_PHONE_NUMBER are set correctly.
+2025-05-25 00:16:47,101 - __main__ - INFO - Starting Email to SMS service
+2025-05-25 00:16:47,103 - __main__ - INFO - Testing SMS functionality...
+2025-05-25 00:16:47,103 - __main__ - INFO - Starting direct SMS test
+2025-05-25 00:16:47,103 - __main__ - INFO - Attempting to send SMS to +91 89793 92188
+2025-05-25 00:16:47,103 - __main__ - INFO - Sending SMS from +16084409779 to +918979392188
+2025-05-25 00:16:47,103 - __main__ - INFO - Message content: This is a test message from EchoMind SMS service at 2025-05-25 00:16:47
+2025-05-25 00:16:47,401 - twilio.http_client - INFO - -- BEGIN Twilio API Request --
+2025-05-25 00:16:47,401 - twilio.http_client - INFO - POST Request: https://api.twilio.com/2010-04-01/Accounts/ACdcd8b919d23c4b163d99206c2fabfa0d/Messages.json
+2025-05-25 00:16:47,401 - twilio.http_client - INFO - Headers:
+2025-05-25 00:16:47,401 - twilio.http_client - INFO - Content-Type : application/x-www-form-urlencoded
+2025-05-25 00:16:47,401 - twilio.http_client - INFO - Accept : application/json
+2025-05-25 00:16:47,401 - twilio.http_client - INFO - User-Agent : twilio-python/9.6.1 (Windows AMD64) Python/3.12.7
+2025-05-25 00:16:47,401 - twilio.http_client - INFO - X-Twilio-Client : python-9.6.1
+2025-05-25 00:16:47,401 - twilio.http_client - INFO - Accept-Charset : utf-8
+2025-05-25 00:16:47,401 - twilio.http_client - INFO - -- END Twilio API Request --
+2025-05-25 00:16:48,413 - twilio.http_client - INFO - Response Status Code: 201
+2025-05-25 00:16:48,413 - twilio.http_client - INFO - Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '874', 'Connection': 'keep-alive', 'Date': 'Sat, 24 May 2025 18:46:47 GMT', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQa135a31a7df6f28efcb99b5f3bf85c4f', 'Twilio-Request-Duration': '0.408', 'X-Home-Region': 'us1', 'X-Api-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Shenanigans': 'none', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 a6b240a2e408af245a3e573d1af287a4.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'HKG54-P1', 'X-Amz-Cf-Id': 'aXPKSTFOqtZkV0iNlACmgQiYv33TSDbkOaRGtIMcUzgPkKlqHi8Y2g==', 'Vary': 'Origin'}
+2025-05-25 00:16:48,413 - __main__ - INFO - SMS sent successfully with SID: SMa135a31a7df6f28efcb99b5f3bf85c4f
+2025-05-25 00:16:48,413 - __main__ - INFO - Test SMS sent successfully
+2025-05-25 00:16:48,413 - __main__ - INFO - SMS test result: Success
+2025-05-25 00:16:48,422 - __main__ - INFO - No unprocessed email files found
+2025-05-25 00:16:48,422 - __main__ - INFO - No unprocessed email files found
+2025-05-25 00:16:48,426 - __main__ - INFO - Found 0 email files to process
+2025-05-25 00:16:48,427 - __main__ - INFO - Looking specifically for due_now emails
+2025-05-25 00:16:48,427 - __main__ - INFO - Email to SMS processing complete. Processed 0 files.
+2025-05-25 00:16:48,427 - __main__ - INFO - Processed 0 email files
+2025-05-25 00:54:43,867 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-25 00:54:43,970 - werkzeug - WARNING -  * Debugger is active!
+2025-05-25 00:54:43,970 - werkzeug - INFO -  * Debugger PIN: 705-627-040
+2025-05-25 00:55:05,640 - werkzeug - INFO -  * Detected change in 'D:\\Desktop\\buildverse\\EchoMind\\Backend\\sms.py', reloading
+2025-05-25 00:55:14,620 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-25 00:55:14,695 - werkzeug - WARNING -  * Debugger is active!
+2025-05-25 00:55:14,700 - werkzeug - INFO -  * Debugger PIN: 705-627-040
+2025-05-25 00:55:15,773 - werkzeug - INFO -  * Detected change in 'D:\\Desktop\\buildverse\\EchoMind\\Backend\\send_email.py', reloading
+2025-05-25 00:55:22,165 - __main__ - INFO - Starting Email to SMS service
+2025-05-25 00:55:22,179 - __main__ - INFO - Testing SMS functionality...
+2025-05-25 00:55:22,226 - __main__ - INFO - Starting direct SMS test
+2025-05-25 00:55:22,258 - __main__ - INFO - Attempting to send SMS to +91 89793 92188
+2025-05-25 00:55:22,275 - __main__ - INFO - Sending SMS from +16084409779 to +918979392188
+2025-05-25 00:55:22,287 - __main__ - INFO - Message content: This is a test message from EchoMind SMS service at 2025-05-25 00:55:22
+2025-05-25 00:55:23,023 - twilio.http_client - INFO - -- BEGIN Twilio API Request --
+2025-05-25 00:55:23,023 - twilio.http_client - INFO - POST Request: https://api.twilio.com/2010-04-01/Accounts/ACdcd8b919d23c4b163d99206c2fabfa0d/Messages.json
+2025-05-25 00:55:23,023 - twilio.http_client - INFO - Headers:
+2025-05-25 00:55:23,023 - twilio.http_client - INFO - Content-Type : application/x-www-form-urlencoded
+2025-05-25 00:55:23,025 - twilio.http_client - INFO - Accept : application/json
+2025-05-25 00:55:23,025 - twilio.http_client - INFO - User-Agent : twilio-python/9.6.1 (Windows AMD64) Python/3.12.7
+2025-05-25 00:55:23,025 - twilio.http_client - INFO - X-Twilio-Client : python-9.6.1
+2025-05-25 00:55:23,025 - twilio.http_client - INFO - Accept-Charset : utf-8
+2025-05-25 00:55:23,025 - twilio.http_client - INFO - -- END Twilio API Request --
+2025-05-25 00:55:23,668 - twilio.http_client - INFO - Response Status Code: 201
+2025-05-25 00:55:23,671 - twilio.http_client - INFO - Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '874', 'Connection': 'keep-alive', 'Date': 'Sat, 24 May 2025 19:25:22 GMT', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ341754be905e2b0266cf24ab72737c90', 'Twilio-Request-Duration': '0.127', 'X-Home-Region': 'us1', 'X-Api-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Shenanigans': 'none', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 d22256d9ed39e0ac0efa930a80e2ff52.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'HKG54-P1', 'X-Amz-Cf-Id': 'Kdd9NwHYA8T5u3TCskZ8OkEsTqN83ESkgO3fKa6R_63SM2SbIvdGaQ==', 'Vary': 'Origin'}
+2025-05-25 00:55:23,694 - __main__ - INFO - SMS sent successfully with SID: SM341754be905e2b0266cf24ab72737c90
+2025-05-25 00:55:23,694 - __main__ - INFO - Test SMS sent successfully
+2025-05-25 00:55:23,698 - __main__ - INFO - SMS test result: Success
+2025-05-25 00:55:23,701 - __main__ - INFO - No unprocessed email files found
+2025-05-25 00:55:23,707 - __main__ - INFO - No unprocessed email files found
+2025-05-25 00:55:23,707 - __main__ - INFO - Found 0 email files to process
+2025-05-25 00:55:23,713 - __main__ - INFO - Looking specifically for due_now emails
+2025-05-25 00:55:23,713 - __main__ - INFO - Email to SMS processing complete. Processed 0 files.
+2025-05-25 00:55:23,715 - __main__ - INFO - Processed 0 email files
+2025-05-25 00:55:23,778 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-25 00:55:23,844 - werkzeug - WARNING -  * Debugger is active!
+2025-05-25 00:55:23,852 - werkzeug - INFO -  * Debugger PIN: 705-627-040

@@ -3,6 +3,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
+from sms import send_notification_sms
 
 # Load environment variables from .env file
 load_dotenv()
@@ -70,4 +71,39 @@ def send_sos_email(recipient_name, recipient_email, user_name, location, timesta
     
     except Exception as e:
         print(f"Failed to send email to {recipient_email}: {str(e)}")
+        raise
+
+def send_email(to_email, subject, body):
+    """Send both email and SMS notifications"""
+    try:
+        # Original email sending code
+        email_address = os.getenv("EMAIL_ADDRESS") or "echomind.reminder@gmail.com"
+        email_password = os.getenv("EMAIL_PASSWORD") or "amhd krsr pmnh cybq"
+
+        print(f"Using email address: {email_address}")
+        print("Connecting to SMTP server...")
+
+        msg = MIMEMultipart()
+        msg['From'] = email_address
+        msg['To'] = to_email
+        msg['Subject'] = subject
+
+        msg.attach(MIMEText(body, 'plain'))
+
+        with smtplib.SMTP('smtp.gmail.com', 587) as server:
+            server.starttls()
+            server.login(email_address, email_password)
+            server.send_message(msg)
+        print(f"Email sent to {to_email}")
+
+        # Add SMS sending
+        # Get phone number from environment or patient record
+        recipient_phone = os.getenv('RECIPIENT_PHONE_NUMBER')
+        if recipient_phone:
+            send_notification_sms(recipient_phone, subject, body)
+        else:
+            print("No phone number configured for SMS notifications")
+
+    except Exception as e:
+        print(f"Error in send_email: {str(e)}")
         raise
