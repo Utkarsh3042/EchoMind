@@ -164,6 +164,5 @@ Open two terminals:
 - **Team Members:** AP Saroon  
 - **Institute:** Bangalore Institute of Technology  
 - **Theme:** Healthcare  
-- **Contact:** [shashupreethims@gmail.com](mailto:shashupreethims@gmail.com)
 
 ---
