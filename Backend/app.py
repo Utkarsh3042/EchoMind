@@ -22,6 +22,9 @@ import re
 import time
 import math # Added for game analytics functions
 from dotenv import load_dotenv # Added for loading environment variables
+from twilio.rest import Client
+
+from twilio.base.exceptions import TwilioRestException
 
 # --- External Dependencies (REQUIRED for SOS functionality) ---
 # Ensure you have 'location_handler.py' and 'send_email.py' in the same directory.
@@ -104,27 +107,63 @@ scheduler.start()
 
 # Helper function to send email notifications (from games.py)
 def send_email(to_email, subject, body):
+    """Send both email and SMS notifications"""
     try:
+        # Send email
         email_address = os.getenv("EMAIL_ADDRESS") or "echomind.reminder@gmail.com"
-        email_password = os.getenv("EMAIL_PASSWORD") or "amhd krsr pmnh cybq" # Use App Password for Gmail
-
-        print(f"Using email address: {email_address}")
-        print("Connecting to SMTP server...")
+        email_password = os.getenv("EMAIL_PASSWORD") or "amhd krsr pmnh cybq"
 
         msg = MIMEMultipart()
         msg['From'] = email_address
         msg['To'] = to_email
         msg['Subject'] = subject
-
         msg.attach(MIMEText(body, 'plain'))
 
         with smtplib.SMTP('smtp.gmail.com', 587) as server:
             server.starttls()
             server.login(email_address, email_password)
             server.send_message(msg)
-        print(f"Email sent to {to_email}")
+            print(f"Email sent to {to_email}")
+
+        # Send SMS immediately after email
+        recipient_phone = os.getenv('RECIPIENT_PHONE_NUMBER')
+        if recipient_phone:
+            send_sms_notification(recipient_phone, subject, body)
+        else:
+            print("No recipient phone number configured for SMS")
+
     except Exception as e:
-        print(f"SMTP connection error: {str(e)}")
+        print(f"Error in send_email: {str(e)}")
+        raise
+
+def send_sms_notification(to_phone, subject, body):
+    """Send SMS using Twilio with verified working configuration"""
+    account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+    auth_token = os.getenv('TWILIO_AUTH_TOKEN')
+    twilio_phone = os.getenv('TWILIO_PHONE_NUMBER')
+    
+    if not all([account_sid, auth_token, twilio_phone, to_phone]):
+        print("Error: Missing Twilio configuration")
+        return False
+    
+    try:
+        client = Client(account_sid, auth_token)
+        # Combine subject and body for SMS
+        sms_text = f"{subject}\n\n{body}"
+        
+        message = client.messages.create(
+            body=sms_text,
+            from_=twilio_phone,
+            to=to_phone
+        )
+        print(f"SMS sent successfully with SID: {message.sid}")
+        return True
+    except TwilioRestException as e:
+        print(f"Twilio Error: {str(e)}")
+        return False
+    except Exception as e:
+        print(f"General Error: {str(e)}")
+        return False
 
 # Helper function to check and send medication reminders (from games.py)
 def check_and_send_reminder(reminder):
@@ -1832,6 +1871,7 @@ def update_routine(routine_id):
             updated_routine = routines_collection.find_one({'_id': ObjectId(routine_id)})
             if updated_routine:
                 schedule_routine_email(updated_routine, routine_id)
+           
             else:
                 print(f"Could not find updated routine {routine_id} to reschedule.")
 
