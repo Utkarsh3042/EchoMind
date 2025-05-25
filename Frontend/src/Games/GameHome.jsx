@@ -72,7 +72,8 @@ function GameHome() {
         try {
           console.log('Fetching data for user ID:', user._id);
 
-          const response = await fetch(`http://localhost:5000/api/games/${user._id}`, {
+          // const response = await fetch(`http://localhost:5000/api/games/${user._id}`, {
+          const response = await fetch(`https://echomind-6.onrender.com/api/games/${user._id}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

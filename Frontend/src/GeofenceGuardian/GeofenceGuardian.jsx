@@ -4,7 +4,7 @@ import NavBack from "../NavBack";
 import { useTranslation } from 'react-i18next'; // Add this import
 
 // Enhanced SOS Button component with auto-trigger functionality
-const SosButton = ({ autoTrigger = false, user, apiUrl = 'http://localhost:5000/api' }) => {
+const SosButton = ({ autoTrigger = false, user, apiUrl = 'https://echomind-6.onrender.com/api' }) => {
   const { t } = useTranslation(); // Add translation hook
   const [sending, setSending] = useState(false);
   const [status, setStatus] = useState(null);
@@ -677,7 +677,8 @@ const GeofenceGuardian = () => {
             <SosButton
               autoTrigger={sosTriggered}
               user={mockUser}
-              apiUrl="http://localhost:5000/api"
+             /* apiUrl="http://localhost:5000/api"*/
+              apiUrl="https://echomind-6.onrender.com/api"
             />
           </div>
         )}

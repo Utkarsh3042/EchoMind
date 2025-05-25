@@ -22,7 +22,8 @@ const ReminderList = ({ refreshTrigger }) => {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("http://localhost:5000/api/medication-reminders");
+   /*   const response = await fetch("http://localhost:5000/api/medication-reminders");*/
+      const response = await fetch("https://echomind-6.onrender.com/api/medication-reminders");
       const result = await response.json();
       
       if (result.success) {
@@ -58,7 +59,8 @@ const ReminderList = ({ refreshTrigger }) => {
     if (!confirm(t("confirmDeleteReminder"))) return;
     
     try {
-      const response = await fetch(`http://localhost:5000/api/medication-reminders/${id}`, {
+      /*const response = await fetch(`http://localhost:5000/api/medication-reminders/${id}`, {*/
+      const response = await fetch(`https://echomind-6.onrender.com/api/medication-reminders/${id}`, {
         method: "DELETE",
       });
       const result = await response.json();
@@ -76,7 +78,8 @@ const ReminderList = ({ refreshTrigger }) => {
 
   const handleComplete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/medication-reminders/${id}/complete`, {
+  /*    const response = await fetch(`http://localhost:5000/api/medication-reminders/${id}/complete`, {*/
+      const response = await fetch(`https://echomind-6.onrender.com/api/medication-reminders/${id}/complete`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -131,7 +134,8 @@ const ReminderList = ({ refreshTrigger }) => {
         date_time: formData.date_time.replace("T", " ") + ":00",
       };
 
-      const response = await fetch(`http://localhost:5000/api/medication-reminders/${editingReminder}`, {
+      /*const response = await fetch(`http://localhost:5000/api/medication-reminders/${editingReminder}`, {*/
+      const response = await fetch(`https://echomind-6.onrender.com/api/medication-reminders/${editingReminder}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formattedData),

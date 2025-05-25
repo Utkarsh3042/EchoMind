@@ -150,7 +150,8 @@ const Signup = ({ onSignup }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/signup', {
+      /*const response = await fetch('http://localhost:5000/api/signup', {*/
+      const response = await fetch('https://echomind-6.onrender.com/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -165,7 +166,7 @@ const Signup = ({ onSignup }) => {
       if (response.ok) {
         localStorage.setItem('user', JSON.stringify(data.user || { email: formData.email, name: formData.name }));
         if (onSignup) onSignup();
-        navigate('/login');
+        navigate('/');
       } else {
         setError(data.message || 'Signup failed. Please try again.');
       }
