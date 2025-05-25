@@ -1,9 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
 import { MapPin, Shield, AlertTriangle, Settings } from 'lucide-react';
 import NavBack from "../NavBack";
+import { useTranslation } from 'react-i18next'; // Add this import
 
 // Enhanced SOS Button component with auto-trigger functionality
 const SosButton = ({ autoTrigger = false, user, apiUrl = 'http://localhost:5000/api' }) => {
+  const { t } = useTranslation(); // Add translation hook
   const [sending, setSending] = useState(false);
   const [status, setStatus] = useState(null);
   const [battery, setBattery] = useState(null);
@@ -91,7 +93,7 @@ const SosButton = ({ autoTrigger = false, user, apiUrl = 'http://localhost:5000/
   const cancelSos = () => {
     setCountdown(null);
     setExpanded(false);
-    setStatus({ type: 'info', message: 'SOS canceled' });
+    setStatus({ type: 'info', message: t('sosCanceled') });
   };
 
   const sendSos = async () => {
@@ -109,7 +111,7 @@ const SosButton = ({ autoTrigger = false, user, apiUrl = 'http://localhost:5000/
         },
         body: JSON.stringify({
           user_id: user?.user_id,
-          name: user?.name || "Anonymous User",
+          name: user?.name || t('anonymousUser'),
           location: locationData,
           battery: battery
         })
@@ -120,17 +122,17 @@ const SosButton = ({ autoTrigger = false, user, apiUrl = 'http://localhost:5000/
       if (data.success) {
         setStatus({
           type: 'success',
-          message: 'SOS alert sent successfully! Emergency contacts have been notified.',
+          message: t('sosAlertSentSuccessfully'),
           details: data
         });
       } else {
-        throw new Error(data.message || 'Failed to send SOS');
+        throw new Error(data.message || t('failedToSendSOS'));
       }
     } catch (error) {
       console.error('SOS error:', error);
       setStatus({
         type: 'error',
-        message: `SOS alert failed: ${error.message}`,
+        message: `${t('sosAlertFailed')}: ${error.message}`,
       });
     } finally {
       setSending(false);
@@ -144,7 +146,7 @@ const SosButton = ({ autoTrigger = false, user, apiUrl = 'http://localhost:5000/
       {autoTrigger && (
         <div className="mb-4 p-3 bg-red-800/60 border border-red-700 rounded-lg text-red-100 text-center font-semibold">
           <AlertTriangle size={20} className="inline mr-2 text-red-400" />
-          <strong>Automatic SOS Triggered - Geofence Breach Detected</strong>
+          <strong>{t('automaticSOSTriggered')}</strong>
         </div>
       )}
 
@@ -155,18 +157,18 @@ const SosButton = ({ autoTrigger = false, user, apiUrl = 'http://localhost:5000/
               {countdown}
             </div>
             <div className="text-lg text-purple-200 mb-4">
-              {autoTrigger ? 'Auto-sending SOS alert in' : 'Sending SOS in'} {countdown} seconds
+              {autoTrigger ? t('autoSendingSosAlert', {seconds: countdown}) : t('sendingSosIn', {seconds: countdown})}
             </div>
             <div className="text-sm text-purple-300 mb-4">
-              {location ? '✓ Location acquired' : '⚠ Getting location...'}
-              {battery && ` • Battery: ${battery}%`}
+              {location ? t('locationAcquired') : t('gettingLocation')}
+              {battery && t('batteryPercent', {percent: battery})}
             </div>
           </div>
           <button
             className="cancel-button bg-gray-700 hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform active:scale-95"
             onClick={cancelSos}
           >
-            Cancel SOS
+            {t('cancelSOS')}
           </button>
         </div>
       ) : (
@@ -176,9 +178,9 @@ const SosButton = ({ autoTrigger = false, user, apiUrl = 'http://localhost:5000/
               className={`w-full bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-xl font-bold rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 ${sending ? 'animate-pulse opacity-75' : 'animate-pulse'}`}
               onClick={startSosCountdown}
               disabled={sending}
-              aria-label="Send emergency alert"
+              aria-label={t('sendEmergencyAlert')}
             >
-              {sending ? '⏳ Sending...' : '🆘 EMERGENCY SOS'}
+              {sending ? t('sending') : t('emergencySOS')}
             </button>
           )}
 
@@ -194,9 +196,9 @@ const SosButton = ({ autoTrigger = false, user, apiUrl = 'http://localhost:5000/
               </div>
               {status.details && (
                 <div className="text-sm opacity-80 text-purple-100">
-                  Time: {new Date(status.details.timestamp).toLocaleTimeString()}
+                  {t('time')}: {new Date(status.details.timestamp).toLocaleTimeString()}
                   {status.details.location && (
-                    <div>Location: {status.details.location.latitude.toFixed(5)}, {status.details.location.longitude.toFixed(5)}</div>
+                    <div>{t('location')}: {status.details.location.latitude.toFixed(5)}, {status.details.location.longitude.toFixed(5)}</div>
                   )}
                 </div>
               )}
@@ -210,14 +212,14 @@ const SosButton = ({ autoTrigger = false, user, apiUrl = 'http://localhost:5000/
           <div className="grid grid-cols-2 gap-4">
             <div>
               {location ? (
-                <span className="text-green-400">✓ Location available</span>
+                <span className="text-green-400">{t('locationAvailable')}</span>
               ) : (
-                <span className="text-red-400">✗ Location unavailable</span>
+                <span className="text-red-400">{t('locationUnavailable')}</span>
               )}
             </div>
             {battery !== null && (
               <div>
-                Battery: {battery}%
+                {t('battery')}: {battery}%
               </div>
             )}
           </div>
@@ -229,6 +231,7 @@ const SosButton = ({ autoTrigger = false, user, apiUrl = 'http://localhost:5000/
 
 // Simple Map Component
 const GeofenceMap = ({ center, radius, currentLocation, isOutside }) => {
+  const { t } = useTranslation(); // Add translation hook
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -307,9 +310,9 @@ const GeofenceMap = ({ center, radius, currentLocation, isOutside }) => {
     ctx.fillStyle = '#e0c9ff'; // Light purple text for labels
     ctx.font = '14px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('Geofence Center', centerX, height - 20);
+    ctx.fillText(t('geofenceCenter'), centerX, height - 20);
 
-  }, [center, radius, currentLocation, isOutside]);
+  }, [center, radius, currentLocation, isOutside, t]);
 
   // Haversine formula for distance in meters
   const getDistance = (lat1, lon1, lat2, lon2) => {
@@ -336,11 +339,11 @@ const GeofenceMap = ({ center, radius, currentLocation, isOutside }) => {
         <div className="flex justify-center items-center gap-4">
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 bg-a78bfa rounded-full"></div>
-            <span>Center</span>
+            <span>{t('center')}</span>
           </div>
           <div className="flex items-center gap-1">
             <div className={`w-3 h-3 ${isOutside ? 'bg-red-500' : 'bg-green-500'} rounded-full`}></div>
-            <span>Current Position</span>
+            <span>{t('currentPosition')}</span>
           </div>
         </div>
       </div>
@@ -350,6 +353,8 @@ const GeofenceMap = ({ center, radius, currentLocation, isOutside }) => {
 
 // Main Geofencing Component
 const GeofenceGuardian = () => {
+  const { t } = useTranslation(); // Add translation hook
+  
   // Add new state variables
   const [locationAccuracy, setLocationAccuracy] = useState(null);
   const [trackingStatus, setTrackingStatus] = useState('inactive');
@@ -370,26 +375,26 @@ const GeofenceGuardian = () => {
   // Mock user for demo - in real app this would come from props or context
   const mockUser = {
     user_id: 'demo_user_123',
-    name: 'Demo User'
+    name: t('demoUser')
   };
 
   // Add tracking status display helper
   const getTrackingStatusDisplay = () => {
     switch (trackingStatus) {
       case 'getting_location':
-        return { color: 'text-yellow-400', text: 'Getting Location...' };
+        return { color: 'text-yellow-400', text: t('gettingLocation') };
       case 'location_set':
-        return { color: 'text-blue-400', text: 'Location Set' };
+        return { color: 'text-blue-400', text: t('locationSet') };
       case 'geofence_activating':
-        return { color: 'text-yellow-400', text: 'Activating...' };
+        return { color: 'text-yellow-400', text: t('activating') };
       case 'tracking_active':
-        return { color: 'text-green-400', text: 'Tracking Active' };
+        return { color: 'text-green-400', text: t('trackingActive') };
       case 'tracking_error':
-        return { color: 'text-red-400', text: 'Tracking Error' };
+        return { color: 'text-red-400', text: t('trackingError') };
       case 'error':
-        return { color: 'text-red-400', text: 'Error' };
+        return { color: 'text-red-400', text: t('error') };
       default:
-        return { color: 'text-gray-400', text: 'Inactive' };
+        return { color: 'text-gray-400', text: t('inactive') };
     }
   };
 
@@ -401,7 +406,7 @@ const GeofenceGuardian = () => {
     setTrackingStatus('getting_location');
 
     if (!navigator.geolocation) {
-      setLocationError('Geolocation is not supported by this browser.');
+      setLocationError(t('geolocationNotSupported'));
       setTrackingStatus('error');
       return;
     }
@@ -429,7 +434,7 @@ const GeofenceGuardian = () => {
       },
       (error) => {
         setTrackingStatus('error');
-        setLocationError(`Location error: ${error.message}`);
+        setLocationError(`${t('locationError')}: ${error.message}`);
       },
       {
         enableHighAccuracy: true,
@@ -441,7 +446,7 @@ const GeofenceGuardian = () => {
 
   const handleSetPerimeter = () => {
     if (!origin) {
-      alert('Please set your location first!');
+      alert(t('pleaseSetLocationFirst'));
       return;
     }
 
@@ -514,7 +519,7 @@ const GeofenceGuardian = () => {
       (error) => {
         console.error('Location tracking error:', error);
         setTrackingStatus('tracking_error');
-        setLocationError(`Tracking error: ${error.message}`);
+        setLocationError(`${t('trackingError')}: ${error.message}`);
       },
       {
         enableHighAccuracy: true,
@@ -532,7 +537,7 @@ const GeofenceGuardian = () => {
         navigator.geolocation.clearWatch(newWatchId);
       }
     };
-  }, [origin, confirmedRadius, isGeofenceActive, breachDetected]);
+  }, [origin, confirmedRadius, isGeofenceActive, breachDetected, t]);
 
   // Cleanup on component unmount
   useEffect(() => {
@@ -550,9 +555,9 @@ const GeofenceGuardian = () => {
         <div className="text-center mb-8">
           <h1 className="text-4xl font-extrabold mb-2 flex items-center justify-center gap-3 text-white">
             <Shield className="text-purple-400" size={40} />
-            Geofence Guardian
+            {t('geofenceGuardian')}
           </h1>
-          <p className="text-purple-200 text-lg">Set your safety perimeter and stay protected</p>
+          <p className="text-purple-200 text-lg">{t('safetyPerimeterTagline')}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -560,7 +565,7 @@ const GeofenceGuardian = () => {
           <div className="bg-purple-900/40 backdrop-blur-md rounded-xl shadow-xl p-6 border border-purple-700">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2 text-white">
               <Settings className="text-purple-400" size={24} />
-              Control Panel
+              {t('controlPanel')}
             </h2>
 
             {locationError && (
@@ -574,27 +579,27 @@ const GeofenceGuardian = () => {
               className="w-full bg-purple-600 text-white px-6 py-4 text-lg rounded-xl hover:bg-purple-700 transition-all duration-300 transform active:scale-95 shadow-lg mb-6 flex items-center justify-center gap-2 font-semibold"
             >
               <MapPin size={20} />
-              Set Current Location
+              {t('setCurrentLocation')}
             </button>
 
             {location && (
               <>
                 <div className="bg-purple-800/60 rounded-lg p-4 mb-6 border border-purple-700">
-                  <h3 className="font-bold mb-2 text-purple-200">📍 Location Set</h3>
+                  <h3 className="font-bold mb-2 text-purple-200">{t('locationSet')}</h3>
                   <p className="text-sm text-purple-100">
-                    Lat: {location.latitude.toFixed(6)}<br/>
-                    Lng: {location.longitude.toFixed(6)}
+                    {t('lat')}: {location.latitude.toFixed(6)}<br/>
+                    {t('lng')}: {location.longitude.toFixed(6)}
                   </p>
                   {isGeofenceActive && currentLocation && (
                     <p className="text-sm text-purple-300 mt-2">
-                      Distance from center: {lastDistance.toFixed(1)}m
+                      {t('distanceFromCenter', {distance: lastDistance.toFixed(1)})}
                     </p>
                   )}
                 </div>
 
                 <div className="mb-6">
                   <label className="block text-center mb-3 font-semibold text-white">
-                    Safety Perimeter: {tempRadius} meters
+                    {t('safetyPerimeterMeters', {radius: tempRadius})}
                   </label>
                   <input
                     type="range"
@@ -619,7 +624,7 @@ const GeofenceGuardian = () => {
                   onClick={handleSetPerimeter}
                   className="w-full bg-green-600 text-white px-6 py-4 text-lg rounded-xl hover:bg-green-700 transition-all duration-300 transform active:scale-95 shadow-lg mb-4 font-semibold"
                 >
-                  🛡️ Activate Geofence Protection
+                  {t('activateGeofenceProtection')}
                 </button>
 
                 {isGeofenceActive && (
@@ -627,11 +632,11 @@ const GeofenceGuardian = () => {
                     <div className="flex items-center gap-2">
                       <Shield size={20} className="text-green-300" />
                       <span className="font-bold">
-                        Geofence Active - {confirmedRadius}m radius
+                        {t('geofenceActiveRadius', {radius: confirmedRadius})}
                       </span>
                     </div>
                     <div className="text-sm mt-1 text-green-200">
-                      Real-time tracking: {watchId ? 'ON' : 'OFF'}
+                      {t('realtimeTracking')}: {watchId ? t('on') : t('off')}
                     </div>
                   </div>
                 )}
@@ -641,7 +646,7 @@ const GeofenceGuardian = () => {
 
           {/* Visual Map */}
           <div className="bg-purple-900/40 backdrop-blur-md rounded-xl shadow-xl p-6 border border-purple-700">
-            <h2 className="text-2xl font-bold mb-6 text-white">Visual Map</h2>
+            <h2 className="text-2xl font-bold mb-6 text-white">{t('visualMap')}</h2>
 
             {location ? (
               <GeofenceMap
@@ -653,7 +658,7 @@ const GeofenceGuardian = () => {
             ) : (
               <div className="border-2 border-dashed border-purple-700 rounded-lg p-8 text-center text-purple-300">
                 <MapPin size={48} className="mx-auto mb-4 text-purple-500" />
-                <p>Set your location to see the visual map</p>
+                <p>{t('setLocationToSeeMap')}</p>
               </div>
             )}
           </div>
@@ -664,10 +669,10 @@ const GeofenceGuardian = () => {
           <div className="mt-8 bg-red-800/60 border-2 border-red-700 rounded-xl p-6 text-center shadow-xl">
             <div className="flex items-center justify-center gap-3 mb-4">
               <AlertTriangle className="text-red-400" size={32} />
-              <h3 className="text-2xl font-bold text-red-300">GEOFENCE BREACH DETECTED!</h3>
+              <h3 className="text-2xl font-bold text-red-300">{t('geofenceBreachDetected')}</h3>
             </div>
             <p className="text-red-100 mb-6 text-lg">
-              You have moved outside your designated safe area ({lastDistance.toFixed(1)}m from center). Emergency protocol activated.
+              {t('movedOutsideSafeArea', {distance: lastDistance.toFixed(1)})}
             </p>
             <SosButton
               autoTrigger={sosTriggered}
@@ -682,11 +687,11 @@ const GeofenceGuardian = () => {
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm font-semibold">
             <div className="flex items-center gap-2">
               <div className={`w-3 h-3 rounded-full ${location ? 'bg-green-400' : 'bg-gray-500'}`}></div>
-              <span>Location {location ? 'Set' : 'Not Set'}</span>
+              <span>{t('location')} {location ? t('set') : t('notSet')}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className={`w-3 h-3 rounded-full ${isGeofenceActive ? 'bg-green-400' : 'bg-gray-500'}`}></div>
-              <span>Geofence {isGeofenceActive ? 'Active' : 'Inactive'}</span>
+              <span>{t('geofence')} {isGeofenceActive ? t('active') : t('inactive')}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className={`w-3 h-3 rounded-full ${watchId ? 'bg-green-400' : 'bg-gray-500'}`}></div>
@@ -694,11 +699,11 @@ const GeofenceGuardian = () => {
             </div>
             <div className="flex items-center gap-2">
               <div className={`w-3 h-3 rounded-full ${locationAccuracy && locationAccuracy < 20 ? 'bg-green-400' : 'bg-yellow-400'}`}></div>
-              <span>Accuracy: {locationAccuracy ? `±${locationAccuracy.toFixed(1)}m` : 'N/A'}</span>
+              <span>{t('accuracy')}: {locationAccuracy ? t('plusMinusMeters', {meters: locationAccuracy.toFixed(1)}) : t('notAvailable')}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className={`w-3 h-3 rounded-full ${isOutsideGeofence ? 'bg-red-400' : 'bg-green-400'}`}></div>
-              <span>{isOutsideGeofence ? 'Outside' : 'Inside'} Perimeter</span>
+              <span>{isOutsideGeofence ? t('outside') : t('inside')} {t('perimeter')}</span>
             </div>
           </div>
         </div>

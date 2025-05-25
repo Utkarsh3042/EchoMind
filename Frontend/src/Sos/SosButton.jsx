@@ -10,8 +10,10 @@ import {
   Info,
 } from "react-feather";
 import NavBack from "../NavBack";
+import { useTranslation } from "react-i18next"; // Import translation hook
 
 const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
+  const { t } = useTranslation(); // Initialize translation hook
   const [sending, setSending] = useState(false);
   const [status, setStatus] = useState(null);
   const [battery, setBattery] = useState(null);
@@ -58,7 +60,7 @@ const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
       if (!navigator.geolocation) {
         setStatus({
           type: "warning",
-          message: "Geolocation is not supported by your browser.",
+          message: t("geolocationNotSupported"),
         });
         resolve(null);
         return;
@@ -76,14 +78,13 @@ const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
         },
         (error) => {
           console.error("Error getting location:", error);
-          let errorMessage = "An error occurred while getting your location.";
+          let errorMessage = t("locationErrorGeneric");
           if (error.code === error.PERMISSION_DENIED) {
-            errorMessage =
-              "Location access denied. Please enable it in your browser settings.";
+            errorMessage = t("locationPermissionDenied");
           } else if (error.code === error.POSITION_UNAVAILABLE) {
-            errorMessage = "Location information is unavailable.";
+            errorMessage = t("locationUnavailable");
           } else if (error.code === error.TIMEOUT) {
-            errorMessage = "The request to get user location timed out.";
+            errorMessage = t("locationTimeout");
           }
           setStatus({ type: "warning", message: errorMessage });
           resolve(null);
@@ -95,22 +96,20 @@ const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
 
   const startSosCountdown = async () => {
     setSending(true);
-    setStatus({ type: "info", message: "Attempting to get your location..." });
+    setStatus({ type: "info", message: t("gettingLocation") });
     const locationData = await getLocation();
 
     // Only proceed with countdown if location is available or user confirms to send without it
     if (
       locationData ||
-      confirm(
-        "Location could not be determined. Do you still want to send SOS?"
-      )
+      confirm(t("locationNotAvailableConfirm"))
     ) {
       setCountdown(5);
       setExpanded(true); // Expand to show countdown and potential details
       setStatus(null); // Clear previous status
     } else {
       setSending(false);
-      setStatus({ type: "info", message: "SOS initiation cancelled." });
+      setStatus({ type: "info", message: t("sosCancelled") });
     }
   };
 
@@ -118,19 +117,19 @@ const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
     setCountdown(null);
     setExpanded(false);
     setSending(false);
-    setStatus({ type: "info", message: "SOS alert canceled." });
+    setStatus({ type: "info", message: t("sosAlertCanceled") });
   };
 
   const sendSos = async () => {
     setSending(true);
-    setStatus({ type: "info", message: "Sending SOS alert..." });
+    setStatus({ type: "info", message: t("sendingSosAlert") });
 
     try {
       const locationData = location || (await getLocation());
 
       const response = await axios.post(`${apiUrl}/sos`, {
         user_id: user?.user_id,
-        name: user?.name || "Anonymous User",
+        name: user?.name || t("anonymousUser"),
         location: locationData,
         battery: battery,
       });
@@ -138,18 +137,18 @@ const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
       if (response.data.success) {
         setStatus({
           type: "success",
-          message: "SOS alert sent successfully! Help is on the way.",
+          message: t("sosAlertSentSuccess"),
           details: response.data,
         });
       } else {
-        throw new Error(response.data.message || "Failed to send SOS");
+        throw new Error(response.data.message || t("failedToSendSos"));
       }
     } catch (error) {
       console.error("SOS error:", error);
       setStatus({
         type: "error",
-        message: `SOS alert failed: ${
-          error.response?.data?.message || error.message || "Network error"
+        message: `${t("sosAlertFailed")}: ${
+          error.response?.data?.message || error.message || t("networkError")
         }`,
       });
     } finally {
@@ -202,7 +201,7 @@ const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
         >
           <div className="text-center mb-6">
             <h1 className="text-xl sm:text-2xl font-extrabold text-gray-200 tracking-wide uppercase mb-4">
-              EMERGENCY ALERT SYSTEM
+              {t("emergencyAlertSystem")}
             </h1>
           </div>
 
@@ -226,7 +225,7 @@ const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
                   <span className="countdown-number">{countdown}</span>
                 </div>
                 <span className="countdown-text text-base sm:text-lg mt-2">
-                  Sending SOS in {countdown}s
+                  {t("sendingSosInSeconds", { seconds: countdown })}
                 </span>
                 <motion.button
                   className="mt-6 px-6 py-3 bg-white text-red-600 rounded-full font-semibold text-lg shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-300"
@@ -234,7 +233,7 @@ const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Cancel
+                  {t("cancel")}
                 </motion.button>
               </motion.div>
             ) : (
@@ -248,7 +247,7 @@ const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
                 ${!sending && !status?.type && "relative overflow-hidden"}`}
                 onClick={startSosCountdown}
                 disabled={sending}
-                aria-label="Send emergency alert"
+                aria-label={t("sendEmergencyAlert")}
                 variants={buttonVariants}
                 initial="initial"
                 whileTap="tap"
@@ -256,7 +255,7 @@ const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
                 animate={!sending && !status?.type ? "glow" : ""}
               >
                 <span className="text-5xl">SOS</span>
-                <span className="text-lg mt-1">Emergency</span>
+                <span className="text-lg mt-1">{t("emergency")}</span>
                 {sending && (
                   <span className="absolute inset-0 flex items-center justify-center bg-red-800 bg-opacity-70 rounded-full">
                     <svg
@@ -330,14 +329,13 @@ const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
               <div className="location-status flex items-center justify-center">
                 {location ? (
                   <span className="flex items-center text-green-400 font-semibold">
-                    <MapPin className="w-5 h-5 mr-2" /> Location available (
+                    <MapPin className="w-5 h-5 mr-2" /> {t("locationAvailable")} (
                     {location.latitude.toFixed(4)},{" "}
                     {location.longitude.toFixed(4)})
                   </span>
                 ) : (
                   <span className="flex items-center text-red-400 font-semibold">
-                    <AlertCircle className="w-5 h-5 mr-2" /> Location
-                    unavailable
+                    <AlertCircle className="w-5 h-5 mr-2" /> {t("locationUnavailable")}
                   </span>
                 )}
               </div>
@@ -345,13 +343,12 @@ const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
               {battery !== null && (
                 <div className="battery-status flex items-center justify-center">
                   <BatteryCharging className="w-5 h-5 mr-2 text-gray-400" />{" "}
-                  Battery:{" "}
+                  {t("battery")}:{" "}
                   <span className="font-semibold ml-1">{battery}%</span>
                 </div>
               )}
               <p className="text-xs text-gray-500 mt-2">
-                Note: Location accuracy may vary based on device and
-                environment.
+                {t("locationAccuracyNote")}
               </p>
             </motion.div>
           )}
@@ -364,7 +361,7 @@ const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-200 mb-6 text-center">
-            How This Helps
+            {t("howThisHelps")}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <motion.div
@@ -377,11 +374,10 @@ const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
                 <MapPin className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-lg font-semibold text-gray-100 mb-2">
-                Instant Location Sharing
+                {t("instantLocationSharing")}
               </h3>
               <p className="text-sm text-gray-300">
-                Automatically sends your precise location to designated
-                emergency contacts.
+                {t("locationSharingDescription")}
               </p>
             </motion.div>
             <motion.div
@@ -395,11 +391,10 @@ const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
                 <AlertCircle className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-lg font-semibold text-gray-100 mb-2">
-                Quick Emergency Response
+                {t("quickEmergencyResponse")}
               </h3>
               <p className="text-sm text-gray-300">
-                Alerts caregivers immediately, reducing response time during
-                critical moments.
+                {t("emergencyResponseDescription")}
               </p>
             </motion.div>
             <motion.div
@@ -413,29 +408,26 @@ const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
                 <CheckCircle className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-lg font-semibold text-gray-100 mb-2">
-                Enhanced Independence
+                {t("enhancedIndependence")}
               </h3>
               <p className="text-sm text-gray-300">
-                Provides peace of mind for both users and caregivers, allowing
-                more freedom with safety.
+                {t("independenceDescription")}
               </p>
             </motion.div>
           </div>
 
           <div className="usage-instructions bg-gray-900 p-6 rounded-lg shadow-inner">
             <h3 className="text-xl font-bold text-red-400 mb-4 text-center">
-              When to Use
+              {t("whenToUse")}
             </h3>
             <ul className="list-disc list-inside text-gray-300 space-y-2 mb-6">
-              <li>If you feel lost or disoriented</li>
-              <li>During medical emergencies</li>
-              <li>When you need immediate assistance</li>
-              <li>If you're feeling unsafe or vulnerable</li>
+              <li>{t("whenLost")}</li>
+              <li>{t("medicalEmergencies")}</li>
+              <li>{t("needAssistance")}</li>
+              <li>{t("feelingUnsafe")}</li>
             </ul>
             <p className="caregiver-note text-red-300 italic text-center text-sm sm:text-base">
-              <strong>For Caregivers:</strong> When an alert is triggered,
-              you'll receive the user's current location, battery status, and
-              timestamp via your connected application or SMS.
+              <strong>{t("forCaregivers")}:</strong> {t("caregiverNoteInfo")}
             </p>
           </div>
         </motion.div>

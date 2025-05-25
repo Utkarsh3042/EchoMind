@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import ReminderList from "./ReminderList";
 import MedicationReminderForm from "./MedicationReminderForm";
-import NavBack from "../NavBack"; // Assuming this component exists
-import { motion } from "framer-motion"; // Import motion from framer-motion
+import NavBack from "../NavBack";
+import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next"; // Add this import
 
 const Combined = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const { t } = useTranslation(); // Add this hook initialization
 
   const refreshReminders = () => {
     // Trigger a refresh of the reminders list without reloading the page
@@ -31,11 +33,7 @@ const Combined = () => {
   };
 
   return (
-    <div
-      className="min-h-screen bg-gradient-to-br from-purple-800 via-purple-700 to-purple-900 text-white p-4 sm:p-6 lg:p-8 font-sans"
-      // Added font-sans for a cleaner look consistent with the image
-    >
-      {/* Assuming NavBack handles the top bar with EchoMind logo and Logout */}
+    <div className="min-h-screen bg-gradient-to-br from-purple-800 via-purple-700 to-purple-900 text-white p-4 sm:p-6 lg:p-8 font-sans">
       <NavBack />
 
       <motion.h1
@@ -44,7 +42,7 @@ const Combined = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        Medication Reminder Dashboard
+        {t('medicationReminderDashboard')} {/* Replace with translation function */}
       </motion.h1>
 
       <motion.div
@@ -58,8 +56,6 @@ const Combined = () => {
           className="w-full md:w-1/2 p-4 md:p-6 bg-green-500 bg-opacity-70 rounded-2xl shadow-lg" // Adjusted color and opacity
           variants={itemVariants}
         >
-
-          
           <MedicationReminderForm onReminderCreated={refreshReminders} />
         </motion.div>
 

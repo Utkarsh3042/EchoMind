@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion";
 import Navbar from "../Navbar";
+import { useTranslation } from "react-i18next"; // Import translation hook
 
 // If using npm install for Font Awesome, make sure this is imported somewhere:
 // import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -12,7 +13,8 @@ function Dashboard({ patients, selectedPatient, loading, user }) {
   const navigate = useNavigate();
   const userData = JSON.parse(localStorage.getItem("user"));
   const [isRecording, setIsRecording] = useState(false);
-
+  const { t } = useTranslation(); // Initialize translation hook
+  
   // --- Animation Variants ---
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -83,8 +85,8 @@ function Dashboard({ patients, selectedPatient, loading, user }) {
   const toggleRecording = async () => {
     try {
       const endpoint = isRecording
-        ? "https://slzvr7mc-5000.inc1.devtunnels.ms/stop"
-        : "https://slzvr7mc-5000.inc1.devtunnels.ms/recognize";
+        ? "https://slzvr7mc-8000.inc1.devtunnels.ms/stop"
+        : "https://slzvr7mc-8000.inc1.devtunnels.ms/recognize";
 
       console.log(`Calling endpoint: ${endpoint}`);
 
@@ -120,7 +122,7 @@ function Dashboard({ patients, selectedPatient, loading, user }) {
         <div className="p-4 bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl shadow-xl flex flex-col items-center">
           <div className="animate-spin h-12 w-12 border-4 border-white border-t-transparent rounded-full mb-4"></div>
           <p className="text-white text-lg font-semibold">
-            Loading your profile...
+            {t('loadingProfile')}
           </p>
         </div>
       </div>
@@ -147,19 +149,22 @@ function Dashboard({ patients, selectedPatient, loading, user }) {
               className="text-4xl text-black font-extrabold mb-1"
               variants={profileCardVariants}
             >
-              Hello, {userData?.name || "User"}!
+              {t('hello')}, {userData?.name || t('user')}!
             </motion.h2>
             <motion.p
               className="text-sm text-black"
               variants={profileCardVariants}
             >
-              Today is{" "}
-              {new Date().toLocaleDateString("en-US", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+              {t('todayIs')}{" "}
+              {new Date().toLocaleDateString(
+                t('locale') === 'hi' ? 'hi-IN' : 'en-US', 
+                {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                }
+              )}
             </motion.p>
           </div>
 
@@ -176,7 +181,7 @@ function Dashboard({ patients, selectedPatient, loading, user }) {
               whileTap={{ scale: 0.95 }}
             >
               <i className="fas fa-exclamation-circle text-2xl" />
-              <span>Send SOS</span>
+              <span>{t('sendSOS')}</span>
             </motion.button>
           </motion.div>
         </motion.div>
@@ -184,23 +189,24 @@ function Dashboard({ patients, selectedPatient, loading, user }) {
         {/* Dashboard Tiles */}
         <div className="grid grid-cols-2 gap-5 mt-10 w-full max-w-2xl">
           {[
-            { icon: "fas fa-chart-line", label: "Summary", path: "/summary" },
-            { icon: "fas fa-gamepad", label: "Games", path: "/games" },
+           {icon: "fas fa-chart-line", label: t('summary'), path: "/summary" },
+            { icon: "fas fa-gamepad", label: t('games'), path: "/games" },
             {
               icon: "fas fa-calendar-alt",
-              label: "Routine & Medication",
+              label: t('routineAndMedication'),
               path: "/medication-reminder",
             },
             {
               icon: "fas fa-address-book",
-              label: "Contacts",
+              label: t('contacts'),
               path: "/contacts",
-            },{ // Add this new tile
-              icon: "fas fa-map-marked-alt", // Choose a relevant icon
-              label: "Geo-Fencing",
-              path: "/geofence-guardian", // New path for your Geo-Fencing component
+            },
+            { 
+              icon: "fas fa-map-marked-alt",
+              label: t('geoFencing'),
+              path: "/geofence-guardian",
             }
-          ].map(({ icon, label, path }) => (
+          ].map(({ icon, label, path })=>(
             <motion.button
               key={path}
               onClick={() => handleNavigation(path)}
@@ -211,7 +217,7 @@ function Dashboard({ patients, selectedPatient, loading, user }) {
               whileHover="hover"
               whileTap="tap"
             >
-              <i className={`${icon} text-4xl  text-black z-10`} />
+              <i className={`${icon} text-4xl text-black z-10`} />
               <span>{label}</span>
             </motion.button>
           ))}
@@ -233,11 +239,11 @@ function Dashboard({ patients, selectedPatient, loading, user }) {
               animate="pulse"
               variants={recordButtonVariants}
             >
-              <i className="fas fa-stop-circle text-3xl" /> Stop Recording
+              <i className="fas fa-stop-circle text-3xl" /> {t('stopRecording')}
             </motion.span>
           ) : (
             <span className="flex items-center gap-2 text-white">
-              <i className="fas fa-play-circle text-3xl" /> Start Recording
+              <i className="fas fa-play-circle text-3xl" /> {t('startRecording')}
             </span>
           )}
         </motion.button>

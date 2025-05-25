@@ -12,12 +12,16 @@ import GameHome from "./Games/GameHome";
 import Dashboard from "./Dashboard/dashboard";
 import SosButton from "./Sos/SosButton";
 import Contacts from "./Contacts/Contacts.jsx";
-import Summary from "./Summary/Summary.jsx";// Import the actual Summary component
+import Summary from "./Summary/Summary.jsx";
 import Combined from "./MedicationReminder/Combined.jsx";
 import GeofenceGuardian from "./GeofenceGuardian/GeofenceGuardian.jsx";
+import LanguageSwitcher from "./components/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
+import "./i18n"; // Import the i18n configuration
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(null); // null = checking
+  const { t } = useTranslation();
 
   useEffect(() => {
     const token = localStorage.getItem("user");
@@ -26,11 +30,12 @@ function App() {
 
   if (isAuthenticated === null) {
     // Show loading while checking auth
-    return <div className="loading-screen">Loading...</div>;
+    return <div className="loading-screen">{t("loading")}</div>;
   }
 
   return (
     <div className="app">
+      {isAuthenticated && <LanguageSwitcher />}
       <Routes>
         <Route
           path="/"
@@ -92,7 +97,7 @@ function App() {
             isAuthenticated ? <PictureMatch /> : <Navigate to="/login" />
           }
         />
-         <Route // Add this new route
+         <Route
           path="/geofence-guardian"
           element={isAuthenticated ? <GeofenceGuardian /> : <Navigate to="/login" />}
         />
