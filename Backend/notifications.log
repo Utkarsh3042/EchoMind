@@ -1,0 +1,26 @@
+2025-05-25 07:50:09,793 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-25 07:50:09,876 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.138.48:5000
+2025-05-25 07:50:09,876 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-05-25 07:50:09,885 - werkzeug - INFO -  * Restarting with stat
+2025-05-25 07:50:13,246 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-25 07:50:13,326 - werkzeug - WARNING -  * Debugger is active!
+2025-05-25 07:50:13,328 - werkzeug - INFO -  * Debugger PIN: 228-824-630
+2025-05-25 07:50:17,949 - werkzeug - INFO - 127.0.0.1 - - [25/May/2025 07:50:17] "GET / HTTP/1.1" 200 -
+2025-05-25 07:50:18,110 - werkzeug - INFO - 127.0.0.1 - - [25/May/2025 07:50:18] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-05-25 08:10:33,065 - werkzeug - INFO - 127.0.0.1 - - [25/May/2025 08:10:33] "OPTIONS /api/login HTTP/1.1" 200 -
+2025-05-25 08:17:27,055 - werkzeug - INFO - 127.0.0.1 - - [25/May/2025 08:17:27] "OPTIONS /api/sos HTTP/1.1" 200 -
+2025-05-25 08:17:31,355 - send_email - INFO - SOS email sent successfully to Emergency Contact 1 <rsubhashsrinivas@gmail.com>
+2025-05-25 08:17:31,355 - send_email - ERROR - RECIPIENT_PHONE_NUMBER not found in environment variables
+2025-05-25 08:17:35,374 - send_email - INFO - SOS email sent successfully to Emergency Contact 2 <shashupreethims@gmail.com>
+2025-05-25 08:17:35,374 - send_email - ERROR - RECIPIENT_PHONE_NUMBER not found in environment variables
+2025-05-25 08:17:39,338 - send_email - INFO - SOS email sent successfully to Caregiver <bossutkarsh.30@gmail.com>
+2025-05-25 08:17:39,338 - send_email - ERROR - RECIPIENT_PHONE_NUMBER not found in environment variables
+2025-05-25 08:17:39,351 - werkzeug - INFO - 127.0.0.1 - - [25/May/2025 08:17:39] "POST /api/sos HTTP/1.1" 200 -
+2025-05-25 08:30:36,092 - werkzeug - INFO -  * Detected change in 'C:\\Users\\shash\\OneDrive\\Desktop\\echomind-final\\EchoMind\\Backend\\app.py', reloading
+2025-05-25 08:30:36,691 - werkzeug - INFO -  * Restarting with stat
+2025-05-25 08:30:40,779 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-25 08:30:40,801 - werkzeug - WARNING -  * Debugger is active!
+2025-05-25 08:30:40,803 - werkzeug - INFO -  * Debugger PIN: 228-824-630

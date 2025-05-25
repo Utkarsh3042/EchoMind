@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next"; // Import translation hook
 
 // Update the base URL to match your backend
 // const API_BASE_URL = "http://localhost:5000";
-const API_BASE_URL = "https://echomind-6.onrender.com/";
+const API_BASE_URL = "https://echomind-6.onrender.com";
 
 function Contacts() {
   const { t } = useTranslation(); // Initialize translation hook
