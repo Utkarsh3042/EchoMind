@@ -64,7 +64,7 @@ app = Flask(__name__)
 # We'll use these and ensure both 5173 and 5174 origins are allowed.
 CORS(app, supports_credentials=True, resources={
     r"/api/*": {
-        "origins": ["http://localhost:5173", "http://localhost:5174", "http://127.0.0.1:5173"],
+        "origins": ["http://localhost:5173", "http://localhost:5174", "http://127.0.0.1:5173", "https://echo-mind-t3ng.vercel.app"],
         "methods": ["GET", "POST", "PUT", "DELETE"],
         "allow_headers": ["Content-Type", "Authorization"]
     }

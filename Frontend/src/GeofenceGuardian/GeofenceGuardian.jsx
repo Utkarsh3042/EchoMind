@@ -677,8 +677,8 @@ const GeofenceGuardian = () => {
             <SosButton
               autoTrigger={sosTriggered}
               user={mockUser}
-             apiUrl="http://localhost:5000/api"
-              // apiUrl="https://echomind-6.onrender.com/api"
+             //apiUrl="http://localhost:5000/api"
+              apiUrl="https://echomind-6.onrender.com/api"
             />
           </div>
         )}

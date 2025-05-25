@@ -28,8 +28,8 @@ function Summary() {
           return;
         }
 
-        const response = await axios.get(`http://localhost:5000/api/known-persons/${patientId}`);
-        // const response = await axios.get(`https://echomind-6.onrender.com/api/known-persons/${patientId}`);
+        //const response = await axios.get(`http://localhost:5000/api/known-persons/${patientId}`);
+        const response = await axios.get(`https://echomind-6.onrender.com/api/known-persons/${patientId}`);
 
         if (response.data.success) {
           setKnownPersons(response.data.known_persons || []);

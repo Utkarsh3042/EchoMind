@@ -12,7 +12,7 @@ import {
 import NavBack from "../NavBack";
 import { useTranslation } from "react-i18next"; // Import translation hook
 
-const SosButton = ({ user, apiUrl = "http://localhost:5000/api" }) => {
+const SosButton = ({ user, apiUrl = "https://echomind-6.onrender.com/api" }) => {
   const { t } = useTranslation(); // Initialize translation hook
   const [sending, setSending] = useState(false);
   const [status, setStatus] = useState(null);
