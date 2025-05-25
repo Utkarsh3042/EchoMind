@@ -104,7 +104,10 @@ EchoMind is an AI-powered caregiving assistant that empowers families to remotel
 cd EchoMind/Frontend
 
 # Install dependencies
-npm install
+npm i install
+npm install tailwindcss @tailwindcss/vite
+npm i axios react-router-dom framer-motion react-feather lucide-react date-fns react-chartjs-2
+npm install i18next react-i18next
 
 # Start development server
 npm run dev
