@@ -24,3 +24,8 @@
 2025-05-25 08:30:40,779 - apscheduler.scheduler - INFO - Scheduler started
 2025-05-25 08:30:40,801 - werkzeug - WARNING -  * Debugger is active!
 2025-05-25 08:30:40,803 - werkzeug - INFO -  * Debugger PIN: 228-824-630
+2025-05-25 08:45:08,950 - werkzeug - INFO -  * Detected change in 'C:\\Users\\shash\\OneDrive\\Desktop\\echomind-final\\EchoMind\\Backend\\app.py', reloading
+2025-05-25 08:45:09,554 - werkzeug - INFO -  * Restarting with stat
+2025-05-25 08:45:12,117 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-25 08:45:12,153 - werkzeug - WARNING -  * Debugger is active!
+2025-05-25 08:45:12,155 - werkzeug - INFO -  * Debugger PIN: 228-824-630
