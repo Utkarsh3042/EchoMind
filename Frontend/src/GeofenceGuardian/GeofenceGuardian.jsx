@@ -599,7 +599,7 @@ const GeofenceGuardian = () => {
 
                 <div className="mb-6">
                   <label className="block text-center mb-3 font-semibold text-white">
-                    {t('safetyPerimeterMeters', {radius: tempRadius})}
+                    Safety Perimeter: {tempRadius} meters
                   </label>
                   <input
                     type="range"
@@ -700,7 +700,7 @@ const GeofenceGuardian = () => {
             </div>
             <div className="flex items-center gap-2">
               <div className={`w-3 h-3 rounded-full ${locationAccuracy && locationAccuracy < 20 ? 'bg-green-400' : 'bg-yellow-400'}`}></div>
-              <span>{t('accuracy')}: {locationAccuracy ? t('plusMinusMeters', {meters: locationAccuracy.toFixed(1)}) : t('notAvailable')}</span>
+              <span>{t('accuracy')}: {locationAccuracy ? `±${locationAccuracy.toFixed(1)}m` : 'N/A'}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className={`w-3 h-3 rounded-full ${isOutsideGeofence ? 'bg-red-400' : 'bg-green-400'}`}></div>
