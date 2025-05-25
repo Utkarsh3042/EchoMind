@@ -81,8 +81,8 @@ function SimonSays() {
 
       console.log("Saving score:", scoreData);
 
-      // const response = await axios.post('http://localhost:5000/api/games', scoreData);
-      const response = await axios.post('https://echomind-6.onrender.com/api/games', scoreData);
+       const response = await axios.post('http://localhost:5000/api/games', scoreData);
+      // const response = await axios.post('https://echomind-6.onrender.com/api/games', scoreData);
 
       console.log("Save score response:", response.data);
 

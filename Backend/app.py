@@ -64,7 +64,7 @@ app = Flask(__name__)
 # We'll use these and ensure both 5173 and 5174 origins are allowed.
 CORS(app, supports_credentials=True, resources={
     r"/api/*": {
-        "origins": ["http://localhost:5173", "http://localhost:5174", "http://127.0.0.1:5173", "https://echo-mind-t3ng.vercel.app"],
+        "origins": ["http://localhost:5173", "http://localhost:5174", "http://127.0.0.1:5173"],
         "methods": ["GET", "POST", "PUT", "DELETE"],
         "allow_headers": ["Content-Type", "Authorization"]
     }
@@ -311,10 +311,6 @@ def is_valid_email(email):
 def is_valid_phone(phone):
     regex = r'^\+?[0-9]{10,15}$'
     return re.match(regex, phone)
-
-@app.route('/')
-def home():
-    return "Welcome to the EchoMind API!"
 
 # === Routes from Sos.py ===
 

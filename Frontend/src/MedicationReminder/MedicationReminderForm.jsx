@@ -41,8 +41,8 @@ const MedicationReminderForm = ({ onReminderCreated }) => {
         date_time: formData.date_time.replace("T", " ") + ":00", // Convert 'YYYY-MM-DDTHH:mm' to 'YYYY-MM-DD HH:MM:SS'
       };
 
-      /*const response = await fetch("http://localhost:5000/api/medication-reminders", {*/
-      const response = await fetch("https://echomind-6.onrender.com/api/medication-reminders", {
+      const response = await fetch("http://localhost:5000/api/medication-reminders", {
+      // const response = await fetch("https://echomind-6.onrender.com/api/medication-reminders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formattedData),

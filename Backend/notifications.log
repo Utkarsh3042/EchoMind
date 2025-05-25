@@ -29,3 +29,33 @@
 2025-05-25 08:45:12,117 - apscheduler.scheduler - INFO - Scheduler started
 2025-05-25 08:45:12,153 - werkzeug - WARNING -  * Debugger is active!
 2025-05-25 08:45:12,155 - werkzeug - INFO -  * Debugger PIN: 228-824-630
+2025-05-25 09:15:56,508 - werkzeug - INFO - 127.0.0.1 - - [25/May/2025 09:15:56] "[33mOPTIONS /sos HTTP/1.1[0m" 404 -
+2025-05-25 09:16:14,245 - werkzeug - INFO -  * Detected change in 'C:\\Users\\shash\\OneDrive\\Desktop\\echomind-final\\EchoMind\\Backend\\app.py', reloading
+2025-05-25 09:16:14,692 - werkzeug - INFO -  * Restarting with stat
+2025-05-25 09:16:16,643 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-25 09:16:16,668 - werkzeug - WARNING -  * Debugger is active!
+2025-05-25 09:16:16,670 - werkzeug - INFO -  * Debugger PIN: 228-824-630
+2025-05-25 09:16:26,578 - werkzeug - INFO - 127.0.0.1 - - [25/May/2025 09:16:26] "[33mOPTIONS /sos HTTP/1.1[0m" 404 -
+2025-05-25 10:02:45,378 - werkzeug - INFO - 127.0.0.1 - - [25/May/2025 10:02:45] "[33mOPTIONS /sos HTTP/1.1[0m" 404 -
+2025-05-25 10:03:16,555 - werkzeug - INFO -  * Detected change in 'C:\\Users\\shash\\OneDrive\\Desktop\\echomind-final\\EchoMind\\Backend\\app.py', reloading
+2025-05-25 10:03:17,326 - werkzeug - INFO -  * Restarting with stat
+2025-05-25 10:03:21,550 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-25 10:03:21,627 - werkzeug - WARNING -  * Debugger is active!
+2025-05-25 10:03:21,632 - werkzeug - INFO -  * Debugger PIN: 228-824-630
+2025-05-25 10:03:30,533 - werkzeug - INFO - 127.0.0.1 - - [25/May/2025 10:03:30] "OPTIONS /api/login HTTP/1.1" 200 -
+2025-05-25 10:03:31,993 - werkzeug - INFO - 127.0.0.1 - - [25/May/2025 10:03:31] "POST /api/login HTTP/1.1" 200 -
+2025-05-25 10:03:40,998 - werkzeug - INFO - 127.0.0.1 - - [25/May/2025 10:03:40] "[33mOPTIONS /sos HTTP/1.1[0m" 404 -
+2025-05-25 10:04:04,997 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-25 10:04:05,085 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.4.89:5000
+2025-05-25 10:04:05,086 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-05-25 10:04:05,094 - werkzeug - INFO -  * Restarting with stat
+2025-05-25 10:04:09,494 - apscheduler.scheduler - INFO - Scheduler started
+2025-05-25 10:04:09,564 - werkzeug - WARNING -  * Debugger is active!
+2025-05-25 10:04:09,574 - werkzeug - INFO -  * Debugger PIN: 228-824-630
+2025-05-25 10:04:20,010 - werkzeug - INFO - 127.0.0.1 - - [25/May/2025 10:04:20] "[33mOPTIONS /sos HTTP/1.1[0m" 404 -
+2025-05-25 10:04:57,583 - werkzeug - INFO - 127.0.0.1 - - [25/May/2025 10:04:57] "[33mOPTIONS /sos HTTP/1.1[0m" 404 -
+2025-05-25 10:07:59,277 - werkzeug - INFO -  * Detected change in 'C:\\Users\\shash\\OneDrive\\Desktop\\echomind-final\\EchoMind\\Backend\\app.py', reloading
+2025-05-25 10:08:00,177 - werkzeug - INFO -  * Restarting with stat
