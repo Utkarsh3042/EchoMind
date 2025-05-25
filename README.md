@@ -5,6 +5,12 @@
 **EchoMind** is an innovative AI-powered caregiving assistant designed to support families in remotely monitoring and engaging with Alzheimer's and dementia patients. It transforms ordinary smartphones into intelligent assistants, aiming to reduce caregiver stress, improve patient outcomes, and enhance safety.
 
 ---
+## Live Demo
+
+You can check out the live version of EchoMind here:  
+🔗 [https://echo-mind-gules.vercel.app](https://echo-mind-gules.vercel.app)
+
+---
 
 ## 🚨 Problem Statement  
 Caregiving for Alzheimer's and dementia patients is emotionally and physically demanding. Families often struggle to provide constant supervision, leading to health risks, confusion, and missed routines for patients.
