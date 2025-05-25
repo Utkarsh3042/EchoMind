@@ -1,2 +1,0 @@
-2025-05-25 00:47:22,368 - __main__ - INFO - Testing SMS utility script.
-2025-05-25 00:47:22,370 - __main__ - WARNING - TEST_RECIPIENT_PHONE_NUMBER environment variable not set. Skipping direct test.
