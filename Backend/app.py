@@ -312,6 +312,10 @@ def is_valid_phone(phone):
     regex = r'^\+?[0-9]{10,15}$'
     return re.match(regex, phone)
 
+@app.route('/')
+def home():
+    return "Welcome to the EchoMind API!"
+
 # === Routes from Sos.py ===
 
 @app.route('/api/signup', methods=['POST'])
